@@ -3,33 +3,33 @@
 
 ## Fonctionalité 
 
-1 - Account Nuker  
-2 - Badge Changer
-3 - Clear Dm
-4 - Group Spammer
-5 - Server Info
-6 - Status Rotator
-7 - Token Checker
-8 - Token Mass Dm
-9 - Webhook Info
-10 - Webhook Spammer
-11 - Ip Information
-12 - Email Information 
-13 - Number Information
-14 - Get your Ip
-15 - Roblox Id Information
-16 - Token Information
-17 - Roblox User Information
-18 - Username Tracker
-19 - Nitro Generator
-20 - Tools Information
-21 - Number Scrapper
-22 - Website Scrapper 
-23 - IBAN Generator
-24 - CC Generator
-25 - Obfuscator
-26 - Token Generator
-27 - Dos Voice 
+- Account Nuker
+- Badge Changer
+- Clear Dm
+- Group Spammer
+- Server Info
+- Status Rotator
+- Token Checker
+- Token Mass Dm
+- Webhook Info
+- Webhook Spammer
+- Ip Information
+- Email Information 
+- Number Information
+- Get your Ip
+- Roblox Id Information
+- Token Information
+- Roblox User Information
+- Username Tracker
+- Nitro Generator
+- Tools Information
+- Number Scrapper
+- Website Scrapper 
+- IBAN Generator
+- CC Generator
+- Obfuscator
+- Token Generator
+- Dos Voice 
 
 
 ## Installation 
