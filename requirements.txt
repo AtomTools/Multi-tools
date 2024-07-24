@@ -2,3 +2,4 @@ emailrep
 requets
 phonenumbers
 colorama
+discord.py==1.7.3
