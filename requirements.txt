@@ -2,5 +2,5 @@ discord.py==1.7.3
 emailrep
 requests
 phonenumbers
-colorama
+pystyle
 holehe
