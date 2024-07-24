@@ -1,5 +1,6 @@
+discord.py==1.7.3
 emailrep
-requets
+requests
 phonenumbers
 colorama
-discord.py==1.7.3
+holehe
