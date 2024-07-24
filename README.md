@@ -52,7 +52,8 @@ Pour pouvoir lancer correctement le tools il vous suffit d'ouvrir le <run & inst
 ```bash
 git clone https://github.com/AtomTools/Multi-tools.git
 cd Multi-tools
-./install.sh```
+./install.sh
+```
 
 ## Support 
 
