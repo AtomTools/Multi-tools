@@ -1,40 +1,34 @@
 import os
+import time
 import subprocess
-from colorama import init, Fore, Style
-
-import os
-import subprocess
-from colorama import init, Fore, Style
-
-
-os.system('cls' if os.name == 'nt' else 'clear')
-
-init(autoreset=True)
-
-os.system('cls' if os.name == 'nt' else 'clear')
-
-init(autoreset=True)
+from pystyle import Colors, Add, Center, Anime
 
 def display_ascii_art():
-    art = f""" {Fore.RED}
+    art = f""" {Colors.red}
 
-                             ▄▄▄· ▄▄▄▄▄      • ▌ ▄ ·.     • ▌ ▄ ·. ▄• ▄▌▄▄▌  ▄▄▄▄▄▪      ▄▄▄▄▄            ▄▄▌  .▄▄ · 
-                             █ ▀█ •██  ▪     ·██ ▐███▪    ·██ ▐███▪█▪██▌██•  •██  ██     •██  ▪     ▪     ██•  ▐█ ▀. 
-                            ▄█▀▀█  ▐█.▪ ▄█▀▄ ▐█ ▌▐▌▐█·    ▐█ ▌▐▌▐█·█▌▐█▌██▪   ▐█.▪▐█·     ▐█.▪ ▄█▀▄  ▄█▀▄ ██▪  ▄▀▀▀█▄
-                            ▐█ ▪▐▌ ▐█▌·▐█▌.▐▌██ ██▌▐█▌    ██ ██▌▐█▌▐█▄█▌▐█▌▐▌ ▐█▌·▐█▌     ▐█▌·▐█▌.▐▌▐█▌.▐▌▐█▌▐▌▐█▄▪▐█
-                             ▀  ▀  ▀▀▀  ▀█▄▀▪▀▀  █▪▀▀▀    ▀▀  █▪▀▀▀ ▀▀▀ .▀▀▀  ▀▀▀ ▀▀▀     ▀▀▀  ▀█▄▀▪ ▀█▄▀▪.▀▀▀  ▀▀▀▀             
-                         ╒═════════════════════════════════════════════════════════════════════════════════════════════════════╕                                              
-                         │  1 - Account Nuker               │ 11 - Ip Information                  │ 21 - Number Scrapper      │                                           
-                         │  2 - Badge Changer               │ 12 - Email Information               │ 22 - Website Scrapper     │                                                        
-                         │  3 - Clear Dm                    │ 13 - Number Information              │ 23 - IBAN Generator       │                                       
-                         │  4 - Group Spammer               │ 14 - Get your Ip                     │ 24 - CC Generator         │                                      
-                         │  5 - Server Info                 │ 15 - Roblox Id Information           │ 25 - Obfuscator           │                                       
-                         │  6 - Status Rotator              │ 16 - Token Information               │ 26 - Token Generator      │      
-                         │  7 - Token Checker               │ 17 - Roblox User Inforamtion         │ 27 - Dos Voice            │        
-                         │  8 - Token Mass Dm               │ 18 - Username Tracker                │                           │     
-                         │  9 - Webhook Info                │ 19 - Nitro Generator                 │                           │      
-                         │  10 - Webhook Spammer            │ 20 - Tools Information               │                           │    
-                         ╘═════════════════════════════════════════════════════════════════════════════════════════════════════╛
+                                                                            
+                                                                ▄▄▄· ▄▄▄▄▄      • ▌ ▄ ·.   
+                                                               ▐█ ▀█ •██  ▪     ·██ ▐███▪  
+                                                               ▄█▀▀█  ▐█.▪ ▄█▀▄ ▐█ ▌▐▌▐█· 
+                                                               ▐█ ▪▐▌ ▐█▌·▐█▌.▐▌██ ██▌▐█▌ 
+                                                                ▀  ▀  ▀▀▀  ▀█▄▀▪▀▀  █▪▀▀▀   
+                                                • ▌ ▄ ·. ▄• ▄▌▄▄▌  ▄▄▄▄▄▪      ▄▄▄▄▄            ▄▄▌  .▄▄ · 
+                                                ·██ ▐███▪█▪██▌██•  •██  ██     •██  ▪     ▪     ██•  ▐█ ▀. 
+                                                ▐█ ▌▐▌▐█·█▌▐█▌██▪   ▐█.▪▐█·     ▐█.▪ ▄█▀▄  ▄█▀▄ ██▪  ▄▀▀▀█▄
+                                                ██ ██▌▐█▌▐█▄█▌▐█▌▐▌ ▐█▌·▐█▌     ▐█▌·▐█▌.▐▌▐█▌.▐▌▐█▌▐▌▐█▄▪▐█
+                                                ▀▀  █▪▀▀▀ ▀▀▀ .▀▀▀  ▀▀▀ ▀▀▀     ▀▀▀  ▀█▄▀▪ ▀█▄▀▪.▀▀▀  ▀▀▀▀   
+                            ╔═════════════════════════════════════════════════════════════════════════════════════════════════╗
+                            ║ 1 - Account Nuker              ║ 11 - Ip Information                 ║ 21 - Number Scrapper     ║
+                            ║ 2 - Badge Changer              ║ 12 - Email Information              ║ 22 - Website Scrapper    ║
+                            ║ 3 - Clear Dm                   ║ 13 - Number Information             ║ 23 - IBAN Generator      ║
+                            ║ 4 - Group Spammer              ║ 14 - Get your Ip                    ║ 24 - CC Generator        ║
+                            ║ 5 - Server Info                ║ 15 - Roblox Id Information          ║ 25 - Obfuscator          ║
+                            ║ 6 - Status Rotator             ║ 16 - Token Information              ║ 26 - Token Generator     ║
+                            ║ 7 - Token Checker              ║ 17 - Roblox User Information        ║ 27 - Dos Voice           ║
+                            ║ 8 - Token Mass Dm              ║ 18 - Username Tracker               ║                          ║
+                            ║ 9 - Webhook Info               ║ 19 - Nitro Generator                ║                          ║
+                            ║ 10 - Webhook Spammer           ║ 20 - Tools Information              ║                          ║
+                            ╚═════════════════════════════════════════════════════════════════════════════════════════════════╝
 """
     print(art)
 
@@ -43,13 +37,48 @@ def execute_script(script_name):
     try:
         subprocess.run(['python', script_path], check=True)
     except subprocess.CalledProcessError as e:
-        print(f"Error executing script '{script_name}': {e}")
+        print(f"{Colors.red}Error executing script '{script_name}': {e}")
+
+def animated_text(text, delay=0.05):
+    for char in text:
+        print(char, end='', flush=True)
+        time.sleep(delay)
+    print()
 
 def main():
-    display_ascii_art()
-    while True:
-        choice = input(Fore.RED + "Choose an option:  " + Style.RESET_ALL)
+    os.system('cls' if os.name == 'nt' else 'clear')
 
+    red = Colors.red
+    reset = Colors.reset
+
+    warning_message = f"""
+{red}
+WARNING: The use of these tools can have significant   
+risks and consequences. By using this software, you    
+agree that we are not responsible for any damage or    
+issues that may arise from the use of these tools.     
+Please use responsibly and at your own risk.           
+
+{reset}
+    """
+
+    animated_text(warning_message, delay=0.03)
+
+    input("\nPress Enter to continue...")
+
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+    display_ascii_art()
+    
+    while True:
+        prompt = f"""
+{red}╭───atom@user/Multi tools
+{red}│
+{red}│
+{red}╰─$ {reset} """
+        
+        choice = input(prompt).strip()
+        
         if choice == '1':
             execute_script('account_nuker.py')
         elif choice == '2':
@@ -57,7 +86,7 @@ def main():
         elif choice == '3':
             execute_script('clear_dm.py')
         elif choice == '4':
-            execute_script('groupe_spammer.py')
+            execute_script('group_spammer.py')
         elif choice == '5':
             execute_script('server_info.py')
         elif choice == '6':
@@ -105,7 +134,7 @@ def main():
         elif choice == '27':
             execute_script('dos_voice.py')
         else:
-            print("Invalid choice, please try again.")
+            print(f"{red}Invalid choice, please try again.{reset}")
 
 if __name__ == "__main__":
     main()
