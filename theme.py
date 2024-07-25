@@ -1,4 +1,4 @@
-from pystyle import Colors
+from pystyle import Colors, Colorate
 
 themes = {
     "default": {
@@ -36,16 +36,6 @@ themes = {
         "secondary": Colors.white,
         "reset": Colors.reset
     },
-    "white_on_black": {
-        "primary": Colors.white,
-        "secondary": Colors.black,
-        "reset": Colors.reset
-    },
-    "black_on_white": {
-        "primary": Colors.black,
-        "secondary": Colors.white,
-        "reset": Colors.reset
-    }
 }
 
 current_theme = themes["default"]
