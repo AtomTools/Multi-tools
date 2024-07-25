@@ -1,9 +1,27 @@
+def install_requirements():
+    packages = [
+        "whois",
+        "discord.py==1.7.3",
+        "emailrep",
+        "requests",
+        "phonenumbers",
+        "pystyle",
+        "holehe",
+        "colorama"
+    ]
+    for package in packages:
+        try:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+        except subprocess.CalledProcessError as e:
+            print(f"Error installing package {package}: {e}")
+
 import os
 import sys
 import time
 import subprocess
 from theme import set_theme, get_current_theme, themes
 from pystyle import Colors, Colorate, Write
+
 
 def animated_text(text, delay=0.05):
     for line in text.split('\n'):
@@ -51,6 +69,7 @@ def execute_script(script_name):
         print(f"{get_current_theme()['primary']}Error executing script '{script_name}': {e}{get_current_theme()['reset']}")
 
 def main():
+    install_requirements()
     os.system('cls' if os.name == 'nt' else 'clear')
 
     current_theme = get_current_theme()
@@ -70,7 +89,7 @@ def main():
 {current_theme["reset"]}
     """
 
-    animated_text(warning_message, delay=0.03)
+    animated_text(warning_message, delay=0.01)
 
     input("\nPress Enter to continue...")
 
