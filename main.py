@@ -135,7 +135,7 @@ def main():
         elif choice == '23':
             execute_script('iban_generator.py')
         elif choice == '24':
-            execute_script('cc_generator.py')
+            execute_script('credit_card_generator.py')
         elif choice == '25':
             execute_script('obfuscator.py')
         elif choice == '26':
