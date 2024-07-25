@@ -2,7 +2,8 @@ import os
 import sys
 import time
 import subprocess
-from theme import set_theme, get_current_theme, themes 
+from theme import set_theme, get_current_theme, themes
+from pystyle import Colors, Colorate, Write
 
 def animated_text(text, delay=0.05):
     for line in text.split('\n'):
@@ -23,16 +24,21 @@ def display_ascii_art():
 ▐█ ▪▐▌ ▐█▌·▐█▌.▐▌██ ██▌▐█▌    ██ ██▌▐█▌▐█▄█▌▐█▌▐▌ ▐█▌·▐█▌     ▐█▌·▐█▌.▐▌▐█▌.▐▌▐█▌▐▌▐█▄▪▐█
  ▀  ▀  ▀▀▀  ▀█▄▀▪▀▀  █▪▀▀▀    ▀▀  █▪▀▀▀ ▀▀▀ .▀▀▀  ▀▀▀ ▀▀▀     ▀▀▀  ▀█▄▀▪ ▀█▄▀▪.▀▀▀  ▀▀▀▀ 
 
-{current_theme["reset"]}[{current_theme["primary"]}1{current_theme["reset"]}] > Account Nuker               [{current_theme["primary"]}11{current_theme["reset"]}] > Ip Information                  [{current_theme["primary"]}21{current_theme["reset"]}] > Number Scrapper    
-[{current_theme["primary"]}2{current_theme["reset"]}] > Badge Changer               [{current_theme["primary"]}12{current_theme["reset"]}] > Email Information               [{current_theme["primary"]}22{current_theme["reset"]}] > Website Scrapper    
-[{current_theme["primary"]}3{current_theme["reset"]}] > Clear Dm                    [{current_theme["primary"]}13{current_theme["reset"]}] > Number Information              [{current_theme["primary"]}23{current_theme["reset"]}] > IBAN Generator      
-[{current_theme["primary"]}4{current_theme["reset"]}] > Group Spammer               [{current_theme["primary"]}14{current_theme["reset"]}] > Get your Ip                     [{current_theme["primary"]}24{current_theme["reset"]}] > CC Generator        
-[{current_theme["primary"]}5{current_theme["reset"]}] > Server Info                 [{current_theme["primary"]}15{current_theme["reset"]}] > Roblox Id Information           [{current_theme["primary"]}25{current_theme["reset"]}] > Obfuscator          
-[{current_theme["primary"]}6{current_theme["reset"]}] > Status Rotator              [{current_theme["primary"]}16{current_theme["reset"]}] > Token Information               [{current_theme["primary"]}26{current_theme["reset"]}] > Token Generator     
-[{current_theme["primary"]}7{current_theme["reset"]}] > Token Checker               [{current_theme["primary"]}17{current_theme["reset"]}] > Roblox User Information         [{current_theme["primary"]}27{current_theme["reset"]}] > Dos Voice           
-[{current_theme["primary"]}8{current_theme["reset"]}] > Token Mass Dm               [{current_theme["primary"]}18{current_theme["reset"]}] > Username Tracker                [{current_theme["primary"]}28{current_theme["reset"]}] > Theme Changer                           
-[{current_theme["primary"]}9{current_theme["reset"]}] > Webhook Info                [{current_theme["primary"]}19{current_theme["reset"]}] > Nitro Generator                                          
-[{current_theme["primary"]}10{current_theme["reset"]}] > Webhook Spammer            [{current_theme["primary"]}20{current_theme["reset"]}] > Tools Information                                        
+Dev : Atom Tools
+───────────────────── 
+Version : 2.1
+─────────────────────
+
+{current_theme["reset"]}{current_theme["primary"]}1{current_theme["reset"]} Account Nuker               {current_theme["primary"]}11{current_theme["reset"]} Ip Information                  {current_theme["primary"]}21{current_theme["reset"]} Number Scrapper    
+{current_theme["primary"]}2{current_theme["reset"]} Badge Changer               {current_theme["primary"]}12{current_theme["reset"]} Email Information               {current_theme["primary"]}22{current_theme["reset"]} Website Scrapper    
+{current_theme["primary"]}3{current_theme["reset"]} Clear Dm                    {current_theme["primary"]}13{current_theme["reset"]} Number Information              {current_theme["primary"]}23{current_theme["reset"]} IBAN Generator      
+{current_theme["primary"]}4{current_theme["reset"]} Group Spammer               {current_theme["primary"]}14{current_theme["reset"]} Get your Ip                     {current_theme["primary"]}24{current_theme["reset"]} CC Generator        
+{current_theme["primary"]}5{current_theme["reset"]} Server Info                 {current_theme["primary"]}15{current_theme["reset"]} Roblox Id Information           {current_theme["primary"]}25{current_theme["reset"]} Obfuscator          
+{current_theme["primary"]}6{current_theme["reset"]} Status Rotator              {current_theme["primary"]}16{current_theme["reset"]} Token Information               {current_theme["primary"]}26{current_theme["reset"]} Token Generator     
+{current_theme["primary"]}7{current_theme["reset"]} Token Checker               {current_theme["primary"]}17{current_theme["reset"]} Roblox User Information         {current_theme["primary"]}27{current_theme["reset"]} Dos Voice           
+{current_theme["primary"]}8{current_theme["reset"]} Token Mass Dm               {current_theme["primary"]}18{current_theme["reset"]} Username Tracker                {current_theme["primary"]}28{current_theme["reset"]} Theme Changer                           
+{current_theme["primary"]}9{current_theme["reset"]} Webhook Info                {current_theme["primary"]}19{current_theme["reset"]} Nitro Generator                                          
+{current_theme["primary"]}10{current_theme["reset"]} Webhook Spammer            {current_theme["primary"]}20{current_theme["reset"]} Tools Information                                        
 
 {current_theme["reset"]}"""
     animated_text(art, delay=0.01)
@@ -51,12 +57,16 @@ def main():
 
     warning_message = f"""
 {current_theme["primary"]}
-WARNING: The use of these tools can have significant   
-risks and consequences. By using this software, you    
-agree that we are not responsible for any damage or    
-issues that may arise from the use of these tools.     
-Please use responsibly and at your own risk.           
-
+      ____               
+     /___/\_     WARNING: The use of these tools can have significant
+    _\   \/_/\__  risks and consequences. By using this software, you
+  __\       \/_/\  agree that we are not responsible for any damage or
+  \   __    __ \ \  issues that may arise from the use of these tools.
+ __\  \_\   \_\ \ \   __  Please use responsibly and at your own risk.
+/_/\\   __   __  \ \_/_/\          
+\_\/_\__\/\__\/\__\/_\_\/          
+   \_\/_/\       /_\_\/
+      \_\/       \_\/
 {current_theme["reset"]}
     """
 
@@ -125,7 +135,7 @@ Please use responsibly and at your own risk.
         elif choice == '23':
             execute_script('iban_generator.py')
         elif choice == '24':
-            execute_script('credit_card_scrapper.py')
+            execute_script('cc_generator.py')
         elif choice == '25':
             execute_script('obfuscator.py')
         elif choice == '26':
@@ -143,7 +153,6 @@ Please use responsibly and at your own risk.
                 if 0 <= theme_index < len(theme_names):
                     set_theme(theme_names[theme_index])
                     os.system('cls' if os.name == 'nt' else 'clear')
-                    print(f"{get_current_theme()['primary']}Theme changed to {theme_names[theme_index]}{get_current_theme()['reset']}")
                     display_ascii_art() 
                 else:
                     print(f"{get_current_theme()['primary']}Invalid choice. No theme changed.{get_current_theme()['reset']}")
