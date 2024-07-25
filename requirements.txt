@@ -5,3 +5,4 @@ requests
 phonenumbers
 pystyle
 holehe
+colorama
