@@ -1,4 +1,4 @@
-from pystyle import Colors, Colorate
+from pystyle import Colors, Colorat
 
 themes = {
     "default": {
