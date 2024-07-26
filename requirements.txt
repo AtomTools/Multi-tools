@@ -6,4 +6,4 @@ colorama
 holehe
 deep_translator
 webbrowser
-seleniu
+seleniun
