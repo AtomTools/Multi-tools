@@ -1,10 +1,8 @@
 {
-    "name_tool": "Atom",
-    "version": "1.5",
+    "name": "Atom",
     "code": "Python",
     "language": "EN",
-    "author": "Atom tools",
-    "platform": "Computer",
-    "discord": "discord.gg/toolsfr",
-    "github": "github.com/RedwxllAtom"
+    "creator": "Atom tools",
+    "discord": "https://discord.gg/toolsfr",
+    "github": "https://github.com/AtomTools"
 }

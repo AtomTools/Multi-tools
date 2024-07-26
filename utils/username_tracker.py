@@ -11,36 +11,33 @@ def main():
 def Continue():
     input("\nPress Enter to continue...")
 
-def Reset():
-    os.system('cls' if os.name == 'nt' else 'clear')
+def clear():
+    print("\033c", end="")
 
 def OnlyWindows():
     print("This option is only available on Windows.")
     Continue()
-    Reset()
+    clear()
 
 def OnlyLinux():
     print("This option is only available on Linux.")
     Continue()
-    Reset()
+    clear()
 
 def ErrorChoice():
     print("Invalid choice. Please select a valid option.")
     Continue()
-    Reset()
+    clear()
 
 def ErrorModule(e):
     print(f"Error importing module: {e}")
     Continue()
-    Reset()
+    clear()
 
 def Error(e):
     print(f"An error occurred: {e}")
     Continue()
-    Reset()
-
-def current_time_hour():
-    return time.strftime("%H:%M:%S")
+    clear()
 
 def text_translated(text):
     try:
@@ -228,7 +225,8 @@ def twitter_search(driver, username):
 
 
 try:
-    username = input((f"\n{current_time_hour()} Username : "))
+    clear()
+    username = input((f"\n Username : "))
 
     print("""
 [01] -> Chrome (Linux)
@@ -236,62 +234,62 @@ try:
 [03] -> Firefox (Windows)
 [04] -> Edge (Windows)
     """)
-    browser = input(f"{current_time_hour()} Browser : ")
+    browser = input(f"Browser : ")
 
     if browser in ['1', '01']:
         if sys.platform.startswith("win"):
             OnlyWindows()
         try:
             navigator = "Chrome Linux"
-            print(f"{current_time_hour()} Starting {navigator}..")
+            print(f"Starting {navigator}..")
             chrome_driver_path = os.path.abspath("./Driver/chromedriverlinux")
             chrome_options = webdriver.ChromeOptions()
             chrome_options.add_argument(f"webdriver.chrome.driver={chrome_driver_path}")
             driver = webdriver.Chrome(options=chrome_options)
-            print(f"{current_time_hour()} {navigator} Ready!")
+            print(f"{navigator} Ready!")
         except:
-            print( f"{current_time_hour()} {navigator} not installed or driver not up to date.")
+            print( f"{navigator} not installed or driver not up to date.")
             Continue()
-            Reset()
+            clear()
             
     elif browser in ['2', '02']:
         if sys.platform.startswith("linux"):
             OnlyLinux()
         try:
             navigator = "Chrome"
-            print(f"{current_time_hour()} Starting {navigator}..")
+            print(f"Starting {navigator}..")
             driver = webdriver.Chrome()
-            print(f"{current_time_hour()} {navigator} Ready!")
+            print(f"{navigator} Ready!")
         except:
-            print(f"{current_time_hour()} {navigator} not installed or driver not up to date.")
+            print(f"{navigator} not installed or driver not up to date.")
             Continue()
-            Reset()
+            clear()
 
     elif browser in ['3', '03']:
         if sys.platform.startswith("linux"):
             OnlyLinux()
         try:
             navigator = "Firefox"
-            print(f"{current_time_hour()} Starting {navigator}..")
+            print(f"Starting {navigator}..")
             driver = webdriver.Firefox()
-            print(f"{current_time_hour()} {navigator} Ready!")
+            print(f"{navigator} Ready!")
         except:
-            print(f"{current_time_hour()} {navigator} not installed or driver not up to date.")
+            print(f"{navigator} not installed or driver not up to date.")
             Continue()
-            Reset()
+            clear()
 
     elif browser in ['4', '04']:
         if sys.platform.startswith("linux"):
             OnlyLinux()
         try:
             navigator = "Edge"
-            print(f"{current_time_hour()} Starting {navigator}..")
+            print(f"Starting {navigator}..")
             driver = webdriver.Edge()
-            print(f"{current_time_hour()} {navigator} Ready!")
+            print(f"{navigator} Ready!")
         except:
-            print(f"{current_time_hour()} {navigator} not installed or driver not up to date.")
+            print(f"{navigator} not installed or driver not up to date.")
             Continue()
-            Reset()
+            clear()
     else:
         ErrorChoice()
 
@@ -314,7 +312,7 @@ try:
     }
 
     print(f"""
-{current_time_hour()} The username "{username}" was found:
+The username "{username}" was found:
 
     Tiktok     : {results.get('Tiktok')}
     Instagram  : {results.get('Instagram')}
@@ -334,7 +332,6 @@ try:
     driver.quit()
 
     Continue()
-    Reset()
 except Exception as e:
     Error(e)
 

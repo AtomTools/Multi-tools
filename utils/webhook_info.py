@@ -1,7 +1,11 @@
 import requests
+import os
+
+def clear():
+    os.system('cls')
 
 def main():
-    print("Atom Tools")
+    pass
 
 def info_webhook(webhook_url):
     headers = {
@@ -12,6 +16,7 @@ def info_webhook(webhook_url):
         response = requests.get(webhook_url, headers=headers)
         response.raise_for_status() 
         webhook_info = response.json()
+        clear()
         print("\nInformation Webhook:")
 
         print(f"ID      : {webhook_info['id']}")

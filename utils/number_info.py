@@ -1,9 +1,13 @@
 import phonenumbers
+import os
 from phonenumbers import geocoder, carrier, timezone
 
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def main():
+    clear()
     pass
 
     try:

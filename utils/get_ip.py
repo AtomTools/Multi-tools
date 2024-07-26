@@ -15,8 +15,8 @@ def ErrorModule(e):
 def Title(title):
     print(f"{title}")
 
-def Reset():
-    print("Reset")
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 Title("Get Your IP")
@@ -50,13 +50,15 @@ try:
         ip_address_ipv6 = "None"
         ErrorModule(e)
 
-    print(f"""
-IP Public [IPv4] : {ip_address_public}
-IP Local  [IPv4] : {ip_address_local}
+    
+    print
+    clear(f"""
+IP Public (IPv4) : {ip_address_public}
+IP Local  (IPv4) : {ip_address_local}
 IPv6 : {ip_address_ipv6}
     """)
 
-    Reset()
+    clear()
 except Exception as e:
     ErrorModule(e)
 

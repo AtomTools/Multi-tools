@@ -1,9 +1,13 @@
 import json
 import requests
+import os
 import threading
 
+def clear():
+    os.system('cls')
+
 def main():
-    print("Atom Tools")
+    pass
 
 def get_dm_channel_ids(token_discord):
     try:
@@ -41,6 +45,7 @@ def MassDM(token_discord, dm_channel_ids, message):
 
 def execute_mass_dm():
     try:
+        clear()
         token_discord = input("Enter your Discord token: ").strip()
         message = input("Enter the message to send: ").strip()
         output_file = "dm_channel_ids.json"
@@ -72,11 +77,12 @@ def execute_mass_dm():
         print(f"Error: {e}")
 
 def display_menu():
+    clear()
     menu = """
-    Atom Tools - Main Menu
-    -----------------------
-    1. Mass DM to Discord Channels
-    2. Exit
+Atom Tools - Main Menu
+───────────────────────────────
+1. Mass DM to Discord Channels
+2. Exit
     
     """
     print(menu)

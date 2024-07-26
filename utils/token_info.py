@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 def main():
     print("Atom Tools")
 
-def Reset():
+def clear():
     import os
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -126,10 +126,10 @@ Bio : {bio_discord}
         print(f"Error when retrieving information: {e}")
 
 if __name__ == "__main__":
-    main()
+    clear()
     try:
         token_discord = input("Enter Discord token: ")
         display_discord_info(token_discord)
-        Reset()
+        clear()
     except Exception as e:
         Error(e)

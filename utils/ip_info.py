@@ -5,10 +5,11 @@ import platform
 import concurrent.futures
 import re
 import whois
+import os
 
 
-def main():
-    pass
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def ping_ip(ip_address):
     try:
@@ -22,7 +23,7 @@ def ping_ip(ip_address):
 
 def get_ip_information(ip_address):
     try:
-        api_key = 'bf609e0ae94346a69905706a764efce5'
+        api_key = 'your_ipgeolocation_api_key'  # Replace with your actual API key
         response = requests.get(f"https://api.ipgeolocation.io/ipgeo?apiKey={api_key}&ip={ip_address}").json()
         
         print(f"\n{'=' * 60}\nIP Information\n{'=' * 60}")
@@ -125,9 +126,7 @@ def port_scan(ip_address, start_port=1, end_port=1024, timeout=1, max_workers=10
     except Exception as e:
         print(f"An error occurred during port scanning: {e}")
 
-
 def whois_lookup(ip_address):
-
     try:
         if not re.match(r"^\d{1,3}(\.\d{1,3}){3}$", ip_address):
             print("Invalid IP address format.")
@@ -156,15 +155,13 @@ def whois_lookup(ip_address):
 def blacklist_check(ip_address):
     try:
         response = requests.get(f"https://api.abuseipdb.com/api/v2/check?ipAddress={ip_address}", headers={
-            'Key': '173b1074344847a7968aeee29091c3bea4db13e52eeb78e9f921ba1fe043468bf9d965d63666d411', 
+            'Key': 'your_abuseipdb_api_key',
             'Accept': 'application/json'
         }).json()
         print(f"\n{'=' * 60}\nBLACKLIST CHECK {ip_address}\n{'=' * 60}")
         print(str(response))
     except Exception as e:
         print(f"An error occurred: {e}")
-
-
 
 def asn_info(ip_address):
     try:
@@ -188,6 +185,52 @@ def asn_info(ip_address):
     except Exception as e:
         print(f"An error occurred: {e}")
 
+def main():
+    clear()
+    while True:
+        print("1. Ping IP")
+        print("2. Get IP Information")
+        print("3. Traceroute IP")
+        print("4. Reverse DNS Lookup")
+        print("5. Port Scan")
+        print("6. WHOIS Lookup")
+        print("7. Blacklist Check")
+        print("8. ASN Information")
+        print("9. Exit")
+        
+        choice = input("Enter your choice: ").strip()
+        
+        if choice == '1':
+            ip_address = input("Enter IP address to ping: ").strip()
+            ping_ip(ip_address)
+        elif choice == '2':
+            ip_address = input("Enter IP address to get information for: ").strip()
+            get_ip_information(ip_address)
+        elif choice == '3':
+            ip_address = input("Enter IP address for traceroute: ").strip()
+            traceroute_ip(ip_address)
+        elif choice == '4':
+            ip_address = input("Enter IP address for reverse DNS lookup: ").strip()
+            reverse_dns_lookup(ip_address)
+        elif choice == '5':
+            ip_address = input("Enter IP address for port scan: ").strip()
+            start_port = int(input("Enter starting port number: ").strip())
+            end_port = int(input("Enter ending port number: ").strip())
+            port_scan(ip_address, start_port, end_port)
+        elif choice == '6':
+            ip_address = input("Enter IP address for WHOIS lookup: ").strip()
+            whois_lookup(ip_address)
+        elif choice == '7':
+            ip_address = input("Enter IP address for blacklist check: ").strip()
+            blacklist_check(ip_address)
+        elif choice == '8':
+            ip_address = input("Enter IP address for ASN information: ").strip()
+            asn_info(ip_address)
+        elif choice == '9':
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice. Please try again.")
 
 if __name__ == "__main__":
     main()

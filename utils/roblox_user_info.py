@@ -7,7 +7,7 @@ def clear():
 def main():
     while True:
         clear()
-        print("Atom Tools - Roblox User Lookup")
+        pass
         try:
             username = input("\nEnter the username (or 'exit' to quit): ")
 

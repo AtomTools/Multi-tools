@@ -1,8 +1,6 @@
-whois
 discord.py==1.7.3
 emailrep
 requests
 phonenumbers
-pystyle
-holehe
 colorama
+holehe

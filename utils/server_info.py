@@ -4,8 +4,6 @@ import os
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def setTitle(title):
-    print(f"{title}")
 
 def main():
     clear()
@@ -17,7 +15,6 @@ def main():
         clear()
 
 def server_lookup():
-    setTitle("Server Lookup")
     clear()
     print("""You can find: \n\n""")
     print("""Invite Link           Inviter Username      Guild Banner        Guild Splash\n""")
