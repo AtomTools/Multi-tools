@@ -1,4 +1,4 @@
-def instal_requirements():
+def install_requirements():
     packages = [
         "whois",
         "instaloader",
