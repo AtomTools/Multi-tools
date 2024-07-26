@@ -3,4 +3,4 @@ title Atom Multi Tools
 
 python main.py
 
-paus
+pause
