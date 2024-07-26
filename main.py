@@ -7,6 +7,7 @@ def install_requirements():
         "requests",
         "phonenumbers",
         "pystyle",
+        "selenium",
         "holehe",
         "deep_translator",
         "colorama"
