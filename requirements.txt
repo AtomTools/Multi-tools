@@ -4,3 +4,6 @@ requests
 phonenumbers
 colorama
 holehe
+deep_translator
+webbrowser
+selenium
