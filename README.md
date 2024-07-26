@@ -1,4 +1,4 @@
-![image](https://cdn.discordapp.com/attachments/1263619795958370438/1265822246430183514/image.png?ex=66a2e855&is=66a196d5&hm=a5119e9f155f94d25cc3a0d1a4409fdac65a93480d67a3d6d762eeff0de28645&)
+![image](https://cdn.discordapp.com/attachments/1263920166534778973/1266441118501965845/image.png?ex=66a528b3&is=66a3d733&hm=ccaab02fb72b4f2d9a7f31b27b7fe9c1ff91a9463a32e27f132ec312becdb115&)
 
 # Atom Multi Tools
 
@@ -41,7 +41,10 @@ Atom Multi Tools is a versatile and powerful toolkit designed to streamline deve
 - CC Generator
 - Obfuscator
 - Token Generator
-- Dos Voice 
+- Dos Voice
+- Dox Tracker
+- Instagram User Information
+- Theme Changer
 
 
 ## Installation 
