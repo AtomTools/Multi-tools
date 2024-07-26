@@ -8,6 +8,7 @@ def install_requirements():
         "phonenumbers",
         "pystyle",
         "holehe",
+        "deep_translator",
         "colorama"
     ]
     for package in packages:
