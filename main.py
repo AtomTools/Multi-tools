@@ -150,7 +150,7 @@ def main():
         elif choice == '19':
             execute_script('nitro_generator.py')
         elif choice == '20':
-            execute_script('nitro_generator.py')
+            execute_script('get_ip.py')
         elif choice == '21':
             execute_script('scrapper_number.py')
         elif choice == '22':
