@@ -86,7 +86,6 @@ def execute_script(script_name):
         print(f"{get_current_theme()['primary']}Error executing script '{script_name}': {e}{get_current_theme()['reset']}")
 
 def main():
-    install_requirements()
     os.system('cls' if os.name == 'nt' else 'clear')
 
     current_theme = get_current_theme()
@@ -181,21 +180,22 @@ def main():
         elif choice == '28':
             execute_script('token_info.py')
         elif choice == '29':
-            print("\nAvailable themes:")
-            for i, theme_name in enumerate(themes.keys(), 1):
-                print(f"{i}. {theme_name}")
-            theme_choice = input("Choose a theme by number: ").strip()
-            theme_names = list(themes.keys())
-            try:
-                theme_index = int(theme_choice) - 1
-                if 0 <= theme_index < len(theme_names):
-                    set_theme(theme_names[theme_index])
-                    os.system('cls' if os.name == 'nt' else 'clear')
-                    display_ascii_art() 
-                else:
-                    print(f"{get_current_theme()['primary']}Invalid choice. No theme changed.{get_current_theme()['reset']}")
-            except ValueError:
-                print(f"{get_current_theme()['primary']}Invalid input. Please enter a number.{get_current_theme()['reset']}")
+                    print("\nAvailable themes:")
+                    for i, theme_name in enumerate(themes.keys(), 1):
+                        print(f"{themes[theme_name]['primary']}{i}. {theme_name}{themes[theme_name]['reset']}")
+                    theme_choice = input("Choose a theme by number: ").strip()
+                    theme_names = list(themes.keys())
+                    try:
+                        theme_index = int(theme_choice) - 1
+                        if 0 <= theme_index < len(theme_names):
+                            set_theme(theme_names[theme_index])
+                            os.system('cls' if os.name == 'nt' else 'clear')
+                        
+                            display_ascii_art() 
+                        else:
+                            print(f"{get_current_theme()['primary']}Invalid choice. No theme changed.{get_current_theme()['reset']}")
+                    except ValueError:
+                        print(f"{get_current_theme()['primary']}Invalid input. Please enter a number.{get_current_theme()['reset']}")
         elif choice == '30':
             execute_script('tools_info.py')
         elif choice == '31':
@@ -206,9 +206,11 @@ def main():
             execute_script('scrapper_proxy.py')
         elif choice == 'next':
             execute_script('main2.py')
+        elif choice == 'prev':
+                    clear()
+                    display_ascii_art()
         elif choice == 'exit':
             break
-
-
+            
 if __name__ == "__main__":
     main()
