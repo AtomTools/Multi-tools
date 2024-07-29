@@ -1,67 +1,61 @@
 import os
-import sys
 import socket
 import requests
 from json import JSONDecodeError
-from datetime import datetime
+from pystyle import Colors, Colorate
 
+def handle_error(e):
+    print(f"{Colors.red}Error: {e}{Colors.reset}")
 
-def main():
-    pass
+def set_title(title):
+    print(f"{Colors.red}{title}{Colors.reset}")
 
-def ErrorModule(e):
-    print(f"Error: {e}")
-
-def Title(title):
-    print(f"{title}")
-
-def clear():
+def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-
-Title("Get Your IP")
-
-try:
-    print(f"\nYour IP is not sent to anyone.")
-    try:
-        response = requests.get('https://api.ipify.org?format=json')
-        ip_address_public = response.json().get('ip', 'None')
-    except (requests.RequestException, JSONDecodeError) as e:
-        ip_address_public = "None"
-        ErrorModule(e)
+def main():
+    clear_screen()
+    set_title("Get Your IP")
 
     try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(('8.8.8.8', 80))
-        ip_address_local = s.getsockname()[0]
-        s.close()
-    except Exception as e:
-        ip_address_local = "None"
-        ErrorModule(e)
+        print(f"{Colors.red}\nYour IP is not sent to anyone.{Colors.reset}")
 
-    try:
-        ip_address_ipv6 = []
-        all_interfaces = socket.getaddrinfo(socket.gethostname(), None)
-        for interface in all_interfaces:
-            if interface[0] == socket.AF_INET6:
-                ip_address_ipv6.append(interface[4][0])
-        ip_address_ipv6 = ' / '.join(ip_address_ipv6) if ip_address_ipv6 else "None"
-    except Exception as e:
-        ip_address_ipv6 = "None"
-        ErrorModule(e)
+        try:
+            response = requests.get('https://api.ipify.org?format=json')
+            ip_address_public = response.json().get('ip', 'None')
+        except (requests.RequestException, JSONDecodeError) as e:
+            ip_address_public = "None"
+            handle_error(e)
 
-    
-    print
-    clear(f"""
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(('8.8.8.8', 80))
+            ip_address_local = s.getsockname()[0]
+            s.close()
+        except Exception as e:
+            ip_address_local = "None"
+            handle_error(e)
+
+        try:
+            ip_address_ipv6 = []
+            all_interfaces = socket.getaddrinfo(socket.gethostname(), None)
+            for interface in all_interfaces:
+                if interface[0] == socket.AF_INET6:
+                    ip_address_ipv6.append(interface[4][0])
+            ip_address_ipv6 = ' / '.join(ip_address_ipv6) if ip_address_ipv6 else "None"
+        except Exception as e:
+            ip_address_ipv6 = "None"
+            handle_error(e)
+
+        clear_screen()
+        print(Colorate.Horizontal(Colors.red, f"""
 IP Public (IPv4) : {ip_address_public}
 IP Local  (IPv4) : {ip_address_local}
 IPv6 : {ip_address_ipv6}
-    """)
+        """))
 
-    clear()
-except Exception as e:
-    ErrorModule(e)
-
+    except Exception as e:
+        handle_error(e)
 
 if __name__ == "__main__":
     main()

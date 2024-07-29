@@ -1,62 +1,61 @@
 import subprocess
 from emailrep import EmailRep
 import re
+from pystyle import Colors
 
-
-def main():
-    pass
+def handle_error(error_message):
+    print(f"{Colors.red}Error: {error_message}{Colors.reset}")
 
 def check_email_with_holehe(email):
     try:
         result = subprocess.run(['holehe', email, '--only-used'], capture_output=True, text=True)
         if result.returncode != 0:
-            print("An error occurred while running holehe")
+            handle_error("An error occurred while running holehe")
             return
 
         output_lines = result.stdout.split('\n')
 
-        print(f"\nResults from Holehe for email: {email}\n")
+        print(f"\n{Colors.red}Results from Holehe for email: {email}{Colors.reset}\n")
         for line in output_lines:
-
             match = re.match(r"\[\+\] Email used: .* on (.*)", line)
             if match:
                 print(match.group(1))
 
     except Exception as e:
-        print(f"Error executing holehe: {str(e)}")
+        handle_error(f"Error executing holehe: {str(e)}")
 
 def get_email_information_with_emailrep(email):
     api = EmailRep()
     try:
         response = api.query(email)
         if response:
-            print("\nResults from EmailRep.io:")
-            print(f"Email: {email}")
+            print(f"\n{Colors.red}Results from EmailRep.io:{Colors.reset}")
+            print(f"{Colors.red}Email:{Colors.reset} {email}")
             if 'reputation' in response:
-                print(f"Reputation: {response['reputation']}")
+                print(f"{Colors.red}Reputation:{Colors.reset} {response['reputation']}")
             else:
-                print("Reputation: N/A")
+                print(f"{Colors.red}Reputation:{Colors.reset} N/A")
                 
             if 'details' in response:
-                print(f"Details: {response['details']}")
+                print(f"{Colors.red}Details:{Colors.reset} {response['details']}")
                 if 'sources' in response['details']:
-                    print(f"Sources: {response['details']['sources']}")
+                    print(f"{Colors.red}Sources:{Colors.reset} {response['details']['sources']}")
                 else:
-                    print("Sources: N/A")
-                print(f"Account creation date: {response['details'].get('date_creation', 'N/A')}")
-                print(f"Last seen: {response['details'].get('last_seen', 'N/A')}")
-                print(f"Days since last seen: {response['details'].get('days_since_last_seen', 'N/A')}")
-                print(f"Blacklist status: {response['details'].get('blacklisted', 'N/A')}")
-                print(f"Malicious status: {response['details'].get('malicious_activity', 'N/A')}")
+                    print(f"{Colors.red}Sources:{Colors.reset} N/A")
+                print(f"{Colors.red}Account creation date:{Colors.reset} {response['details'].get('date_creation', 'N/A')}")
+                print(f"{Colors.red}Last seen:{Colors.reset} {response['details'].get('last_seen', 'N/A')}")
+                print(f"{Colors.red}Days since last seen:{Colors.reset} {response['details'].get('days_since_last_seen', 'N/A')}")
+                print(f"{Colors.red}Blacklist status:{Colors.reset} {response['details'].get('blacklisted', 'N/A')}")
+                print(f"{Colors.red}Malicious status:{Colors.reset} {response['details'].get('malicious_activity', 'N/A')}")
             else:
-                print("Details: N/A")
+                print(f"{Colors.red}Details:{Colors.reset} N/A")
         else:
-            print(f"No information found for {email}")
+            print(f"{Colors.red}No information found for {email}{Colors.reset}")
     except Exception as e:
-        print(f"Error querying EmailRep.io: {str(e)}")
+        handle_error(f"Error querying EmailRep.io: {str(e)}")
 
-if __name__ == "__main__":
-    email = input("Enter the email address: ")
+def main():
+    email = input(f"{Colors.red}Enter the email address: {Colors.reset}")
     check_email_with_holehe(email)
     get_email_information_with_emailrep(email)
 

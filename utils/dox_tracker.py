@@ -1,41 +1,38 @@
 import webbrowser
-
-
-def main():
-    pass
+from pystyle import Colors
 
 def handle_error(error_message):
-    print(f"Error: {error_message}")
+    print(f"{Colors.red}Error: {error_message}{Colors.reset}")
 
 def display_search_options():
-    options = """
-1 - Username
+    options = f"""
+{Colors.red}1 - Username
 2 - Last Name, First Name
-3 - General Search
+3 - General Search{Colors.reset}
     """
     print(options)
 
 def get_search_input(search_type):
     if search_type in ['1', '01']:
-        return input("Enter Username: ")
+        return input(f"{Colors.red}Enter Username: {Colors.reset}")
     elif search_type in ['2', '02']:
-        last_name = input("Enter Last Name: ")
-        first_name = input("Enter First Name: ")
+        last_name = input(f"{Colors.red}Enter Last Name: {Colors.reset}")
+        first_name = input(f"{Colors.red}Enter First Name: {Colors.reset}")
         return last_name, first_name
     elif search_type in ['3', '03']:
-        return input("Enter Search Query: ")
+        return input(f"{Colors.red}Enter Search Query: {Colors.reset}")
     else:
-        raise ValueError("Invalid search type")
+        raise ValueError(f"{Colors.red}Invalid search type{Colors.reset}")
 
 def display_site_options():
-    options = """
-1 - Facebook.com
+    options = f"""
+{Colors.red}1 - Facebook.com
 2 - Youtube.com
 3 - Twitter.com
 4 - Tiktok.com
 5 - Peekyou.com
 6 - Tumblr.com
-7 - PagesJaunes.fr
+7 - PagesJaunes.fr{Colors.reset}
     """
     print(options)
 
@@ -57,7 +54,7 @@ def generate_search_url(site, search_type, search_terms):
         query = search_terms
     
     url = base_urls.get(site, '') + query
-    if site in ['5']:
+    if site == '5':
         url = f"{url}{query.replace(' ', '_')}"
     
     webbrowser.open(url)
@@ -65,18 +62,18 @@ def generate_search_url(site, search_type, search_terms):
 def main():
     try:
         display_search_options()
-        search_type = input("Select Search Type: ")
+        search_type = input(f"{Colors.red}Select Search Type: {Colors.reset}")
         
         search_terms = get_search_input(search_type)
         
         while True:
             display_site_options()
-            site_choice = input("Select Site: ")
+            site_choice = input(f"{Colors.red}Select Site: {Colors.reset}")
             
             if site_choice in ['1', '2', '3', '4', '5', '6', '7']:
                 generate_search_url(site_choice, search_type, search_terms)
             else:
-                print("Invalid site choice. Please select a valid option.")
+                print(f"{Colors.red}Invalid site choice. Please select a valid option.{Colors.reset}")
     
     except Exception as e:
         handle_error(e)

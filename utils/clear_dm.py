@@ -1,16 +1,16 @@
 import os
-import os.path
 import discord
 from discord.ext import commands
+from pystyle import Colors
 
 def clear():
-    pass
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def cleardmtitle():
-    pass
+    print(f"{Colors.red}Clear DM Tool{Colors.reset}")
 
 def setTitle(title):
-    pass
+    os.system(f"title {title}")
 
 def main():
     pass
@@ -19,9 +19,8 @@ setTitle("Clear DM")
 clear()
 cleardmtitle()
 
-
-token = input(f" Your Account Token: ")
-print(f"Write \"!clear\" in one of your DMs to delete your messages")
+token = input(f"{Colors.red}Your Account Token: {Colors.reset}")
+print(f"{Colors.red}Write \"!clear\" in one of your DMs to delete your messages{Colors.reset}")
 
 global bot
 bot = commands.Bot(command_prefix="!", self_bot=True)
@@ -36,10 +35,12 @@ async def clear(ctx, limit: int=None):
             try:
                 await msg.delete()
                 passed += 1
-            except:
+            except Exception as e:
                 failed += 1
-    print(f"\nRemoved {passed} messages with {failed} fails")
-    input(f"\nPress ENTER to exit")
+                print(f"{Colors.red}Failed to delete message: {e}{Colors.reset}")
+    
+    print(f"{Colors.red}\nRemoved {passed} messages with {failed} fails{Colors.reset}")
+    input(f"{Colors.red}\nPress ENTER to exit{Colors.reset}")
     main()
 
 bot.run(token, bot=False)

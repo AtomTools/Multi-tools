@@ -1,18 +1,28 @@
 import phonenumbers
 import os
 from phonenumbers import geocoder, carrier, timezone
+from pystyle import Colors, Colorate
 
 def clear():
+    """Clears the console screen."""
     os.system('cls' if os.name == 'nt' else 'clear')
 
+def print_title(title):
+    """Prints a title with formatting."""
+    print(f"{Colors.blue}{'=' * 60}\n{title}\n{'=' * 60}{Colors.reset}")
+
+def print_error(message):
+    """Prints error messages in red."""
+    print(f"{Colors.red}Error: {message}{Colors.reset}")
 
 def main():
     clear()
-    pass
+    print_title("Phone Number Information")
 
     try:
         while True:
-            phone_number = input("\nPhone Number -> ")
+            phone_number = input(f"{Colors.yellow}\nPhone Number -> {Colors.reset}").strip()
+            
             try:
                 parsed_number = phonenumbers.parse(phone_number, None)
                 if phonenumbers.is_valid_number(parsed_number):
@@ -28,29 +38,28 @@ def main():
                     region = geocoder.description_for_number(parsed_number, "fr")
                     status = "Valid"
                     
-                    print(f"""
-Phone        : {phone_number}
+                    print(f"""{Colors.green}
+Phone : {phone_number}
 Country Code : {country_code}
-Country      : {country}
-Region       : {region}
-Timezone     : {timezone_info}
-Operator     : {operator}
-Type Number  : {type_number}
-                
-                """)
+Country : {country}
+Region : {region}
+Timezone : {timezone_info}
+Operator : {operator}
+Type Number : {type_number}
+{Colors.reset}""")
                     
                 else:
-                    print(" Invalid Format ! [Ex: +442012345678 or +33623456789]")
+                    print_error("Invalid format! [Ex: +442012345678 or +33623456789]")
 
             except Exception as e:
-                print(f" Exception occurred: {e}")
+                print_error(f"Exception occurred: {e}")
 
-            choice = input("Do you want to continue? (y/n): ").strip().lower()
+            choice = input(f"{Colors.yellow}Do you want to continue? (y/n): {Colors.reset}").strip().lower()
             if choice != 'y':
                 break
 
     except Exception as e:
-        print(f"Error: {e}")
+        print_error(f"Error: {e}")
 
 if __name__ == "__main__":
     main()

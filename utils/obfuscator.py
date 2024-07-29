@@ -2,8 +2,9 @@ import re
 import random
 import string
 import time
-import regex
+import base64
 import os
+import regex
 
 class RandomDataTypeGenerator:
     def __init__(self):
@@ -110,6 +111,17 @@ def str_to_hex_bytes(code):
 
     return code
 
+def encode_base64(code):
+    encoded_code = base64.b64encode(code.encode('utf-8')).decode('utf-8')
+    return f"import base64; exec(base64.b64decode('{encoded_code}').decode('utf-8'))"
+
+def inject_useless_code(code):
+    useless_code = "\n".join(
+        f"try:\n    {random.choice(string.ascii_letters)} = {random.choice([self.random_string(), self.random_int()])}"
+        for _ in range(random.randint(10, 30))
+    )
+    return useless_code + "\n" + code
+
 def obfuscate(code, remove_techniques=[]):
     if len(remove_techniques) == 0:
         methods = all_methods
@@ -123,7 +135,7 @@ def obfuscate(code, remove_techniques=[]):
 
     return code
 
-all_methods = [variable_renamer, add_random_variables, one_liner, str_to_hex_bytes]
+all_methods = [variable_renamer, add_random_variables, one_liner, str_to_hex_bytes, encode_base64, inject_useless_code]
 
 def main():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -147,4 +159,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

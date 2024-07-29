@@ -1,33 +1,3 @@
-def install_requirements():
-    packages = [
-        "whois",
-        "instaloader",
-        "discord.py==1.7.3",
-        "emailrep",
-        "requests",
-        "cloudscraper",
-        "fake_useragent",
-        "fade",
-        "uuid",
-        "py-socket",
-        "aiohttp",
-        "instaloader",
-        "phonenumbers",
-        "pystyle",
-        "webbrowser",
-        "selenium",
-        "holehe",
-        "deep_translator",
-        "colorama"
-    ]
-    for package in packages:
-        try:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-        except subprocess.CalledProcessError as e:
-            print(f"Error installing package {package}: {e}")
-
-
-
 
 import os
 import sys
@@ -35,6 +5,9 @@ import time
 import subprocess
 from utils.theme import set_theme, get_current_theme, themes
 from pystyle import Colors, Colorate, Write
+
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def animated_text(text, delay=0.05):
     for line in text.split('\n'):
@@ -211,6 +184,7 @@ def main():
                     display_ascii_art()
         elif choice == 'exit':
             break
-            
+
+
 if __name__ == "__main__":
     main()

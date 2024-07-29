@@ -6,7 +6,6 @@ def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from utils.theme import set_theme, get_current_theme, themes
 
 def animated_text(text, delay=0.05):
@@ -38,6 +37,7 @@ def display_ascii_art():
                             {current_theme["primary"]}31{current_theme["reset"]} Ddos Ip
                             {current_theme["primary"]}32{current_theme["reset"]} Dos Voice
                             {current_theme["primary"]}33{current_theme["reset"]} Proxy Scrappe
+                            {current_theme["primary"]}Prev{current_theme["reset"]} Previous Page
                             {current_theme["primary"]}Exit{current_theme["reset"]} Exit Tool
 
 {current_theme["reset"]}"""
