@@ -1,10 +1,20 @@
-
 import os
 import sys
 import time
 import subprocess
 from utils.theme import set_theme, get_current_theme, themes
 from pystyle import Colors, Colorate, Write
+
+REQUIRED_PACKAGES = [
+    'whois', 'instaloader', 'discord.py==1.7.3', 'emailrep', 'requests', 
+    'phonenumbers', 'pystyle', 'cloudscraper', 'fake_useragent', 'uuid', 
+    'fade', 'py-socket', 'aiohttp', 'selenium', 'holehe', 
+    'deep_translator', 'colorama', 'instaloader'
+]
+
+def install_packages(packages):
+    for package in packages:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -50,7 +60,6 @@ def display_ascii_art():
 {current_theme["reset"]}"""
     animated_text(art, delay=0)
 
-
 def execute_script(script_name):
     script_path = os.path.join('utils', f'{script_name}')
     try:
@@ -59,6 +68,8 @@ def execute_script(script_name):
         print(f"{get_current_theme()['primary']}Error executing script '{script_name}': {e}{get_current_theme()['reset']}")
 
 def main():
+    install_packages(REQUIRED_PACKAGES)
+    
     os.system('cls' if os.name == 'nt' else 'clear')
 
     current_theme = get_current_theme()
