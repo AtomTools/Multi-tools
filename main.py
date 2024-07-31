@@ -42,9 +42,6 @@ def display_ascii_art():
                             ────────────────────────────────────────────────────────────────────────────────────────── 
                             Version : 2.2
                             ──────────────────────────────────────────────────────────────────────────────────────────
-                            Website : https://atom.nekohost.fr/
-                            ──────────────────────────────────────────────────────────────────────────────────────────
-
                             {current_theme["primary"]}1{current_theme["reset"]} Account Nuker               {current_theme["primary"]}11{current_theme["reset"]} Ip Information {current_theme["primary"]}(Osint){current_theme["reset"]}           {current_theme["primary"]}21{current_theme["reset"]} Number Scrapper    
                             {current_theme["primary"]}2{current_theme["reset"]} Badge Changer               {current_theme["primary"]}12{current_theme["reset"]} Email Information {current_theme["primary"]}(Osint){current_theme["reset"]}        {current_theme["primary"]}22{current_theme["reset"]} Website Scrapper   
                             {current_theme["primary"]}3{current_theme["reset"]} Clear Dm                    {current_theme["primary"]}13{current_theme["reset"]} Number Information {current_theme["primary"]}(Osint){current_theme["reset"]}       {current_theme["primary"]}23{current_theme["reset"]} IBAN Generator      
