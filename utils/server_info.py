@@ -26,7 +26,7 @@ def server_lookup():
     print("""Channel ID            Guild Name            Custom Invite Link\n""")
     print("""Expiration Date       Guild ID              Verification Level\n\n\n\n""")
     
-    invitelink = input(f"{Colors.yellow}Insert end part of link of discord server link: {Colors.reset}").strip()
+    invitelink = input(f"{Colors.red}Insert end part of link of discord server link: {Colors.reset}").strip()
     clear()
 
     try:
