@@ -7,22 +7,21 @@ def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def print_title(title):
-    print(f"{Colors.blue}{'=' * 60}\n{title}\n{'=' * 60}{Colors.reset}")
+    print(f"{Colors.red}{'=' * 60}\n{title}\n{'=' * 60}{Colors.reset}")
 
 def print_error(message):
     print(f"{Colors.red}Error: {message}{Colors.reset}")
 
 def print_info(message):
-    print(f"{Colors.green}{message}{Colors.reset}")
+    print(f"{Colors.red}{message}{Colors.reset}")
 
 def print_warning(message):
-    print(f"{Colors.yellow}{message}{Colors.reset}")
+    print(f"{Colors.red}{message}{Colors.reset}")
 
 def main():
     clear()
-    print_title("Token Checker Tool")
 
-    file_path = input(f"{Colors.yellow}Enter the file path: {Colors.reset}").strip()
+    file_path = input(f"{Colors.red}Enter the file path: {Colors.reset}").strip()
     
     if not file_path:
         print_error("No file path provided.")
@@ -35,7 +34,7 @@ def main():
 
     while True:
         check_and_display_results(token_list)
-        choice = input(f"{Colors.yellow}\nDo you want to check tokens again? (y/n): {Colors.reset}").strip().lower()
+        choice = input(f"{Colors.red}\nDo you want to check tokens again? (y/n): {Colors.reset}").strip().lower()
         if choice != 'y':
             break
 
@@ -49,11 +48,11 @@ def load_tokens(file_path):
             token_list.append(token.strip())
             loaded_amount += 1
         print_info(f"{loaded_amount} Tokens Loaded")
-        input(f"{Colors.yellow}Press ENTER to start checking tokens...{Colors.reset}")
+        input(f"{Colors.red}Press ENTER to start checking tokens...{Colors.reset}")
         return token_list
     except FileNotFoundError:
         print_error("File not found")
-        input(f"{Colors.yellow}Press ENTER to exit{Colors.reset}")
+        input(f"{Colors.red}Press ENTER to exit{Colors.reset}")
         return []
 
 def check_and_display_results(token_list):
@@ -102,7 +101,7 @@ def check_and_display_results(token_list):
             print_error(f"Request error: {e}")
             invalid_tokens.append(token)
 
-    print("\n\n" + Colors.blue + "+" + " Results:" + Colors.reset)
+    print("\n\n" + Colors.red + "+" + " Results:" + Colors.reset)
     
     if valid_tokens:
         print_info("Valid tokens:")

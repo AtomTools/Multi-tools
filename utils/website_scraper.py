@@ -4,7 +4,7 @@ import shutil
 import codecs
 import sys
 import os
-
+from pystyle import Colors
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
 
@@ -15,8 +15,8 @@ def main():
 def clear():
     os.system('cls')
 
-
-url = input("Enter URL to scrape: ").strip()
+clear()
+url = input(f"{Colors.red}Enter URL to scrape: ").strip()
 use_tor_network = False
 
 output_folder = urlparse(url).netloc

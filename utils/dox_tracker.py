@@ -1,5 +1,10 @@
 import webbrowser
 from pystyle import Colors
+import os 
+
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
 
 def handle_error(error_message):
     print(f"{Colors.red}Error: {error_message}{Colors.reset}")
@@ -61,6 +66,7 @@ def generate_search_url(site, search_type, search_terms):
 
 def main():
     try:
+        clear()
         display_search_options()
         search_type = input(f"{Colors.red}Select Search Type: {Colors.reset}")
         

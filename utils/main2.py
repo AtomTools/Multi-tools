@@ -31,14 +31,15 @@ def display_ascii_art():
                             ────────────────────────────────────────────────────────────────────────────────────────── 
                             Version : 2.2
                             ──────────────────────────────────────────────────────────────────────────────────────────
-                            Website : https://atom.nekohost.fr/
-                            ──────────────────────────────────────────────────────────────────────────────────────────
-
-                            {current_theme["primary"]}31{current_theme["reset"]} Ddos Ip
-                            {current_theme["primary"]}32{current_theme["reset"]} Dos Voice
+                            {current_theme["primary"]}31{current_theme["reset"]} Ddos Ip                    {current_theme["primary"]}Prev{current_theme["reset"]} Previous Page
+                            {current_theme["primary"]}32{current_theme["reset"]} Dos Voice                  {current_theme["primary"]}Exit{current_theme["reset"]} Exit Tool
                             {current_theme["primary"]}33{current_theme["reset"]} Proxy Scrappe
-                            {current_theme["primary"]}Prev{current_theme["reset"]} Previous Page
-                            {current_theme["primary"]}Exit{current_theme["reset"]} Exit Tool
+                            {current_theme["primary"]}34{current_theme["reset"]} Ip Genetator
+                            {current_theme["primary"]}35{current_theme["reset"]} Site Phising
+                            {current_theme["primary"]}36{current_theme["reset"]} Roblox Cookie Information
+                            {current_theme["primary"]}37{current_theme["reset"]} Search In DataBase
+                            {current_theme["primary"]}38{current_theme["reset"]} Token Decrypt
+                            {current_theme["primary"]}39{current_theme["reset"]} Discord Mass Report
 
 {current_theme["reset"]}"""
     animated_text(art, delay=0)

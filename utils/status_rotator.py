@@ -1,7 +1,7 @@
 import requests
 import time
 import threading
-
+from pystyle import Colors
 
 def get_headers(token):
     headers = {
@@ -12,14 +12,14 @@ def get_headers(token):
 
 
 def main():
-    print("Atom Tools")
+    pass
 
 def clear():
     print("\033c", end="")
 
 
 def read_status_texts():
-    print(f"\n 'Entrer le statut que vous voulez mettre et entrer FIN quand vous avez fini :")
+    print(f"\n {Colors.red}Entrer le statut que vous voulez mettre et entrer FIN quand vous avez fini :")
     status_texts = []
     index = 1
     
@@ -66,16 +66,16 @@ def change_status(token, text):
 def status_changer():
     clear()
     
-    token = input('Entrez le token: ')
+    token = input(f'{Colors.red}Entrez le token: ')
     
     status_texts = read_status_texts()
     
     while True:
         try:
-            time_frequency = int(input('Temps entre chaque changement de statut (en secondes) : '))
+            time_frequency = int(input(f'{Colors.red}Temps entre chaque changement de statut (en secondes) : '))
             break
         except ValueError:
-            print('Veuillez entrer un nombre entier pour le temps.')
+            print(f'{Colors.red}Veuillez entrer un nombre entier pour le temps.')
     
     user_id = get_user_id(token)
     if not user_id:

@@ -1,27 +1,22 @@
 import phonenumbers
 import os
 from phonenumbers import geocoder, carrier, timezone
-from pystyle import Colors, Colorate
+from pystyle import Colors
 
 def clear():
-    """Clears the console screen."""
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def print_title(title):
-    """Prints a title with formatting."""
-    print(f"{Colors.blue}{'=' * 60}\n{title}\n{'=' * 60}{Colors.reset}")
 
 def print_error(message):
-    """Prints error messages in red."""
     print(f"{Colors.red}Error: {message}{Colors.reset}")
 
 def main():
     clear()
-    print_title("Phone Number Information")
+
 
     try:
         while True:
-            phone_number = input(f"{Colors.yellow}\nPhone Number -> {Colors.reset}").strip()
+            phone_number = input(f"{Colors.red}\nPhone Number : {Colors.reset}").strip()
             
             try:
                 parsed_number = phonenumbers.parse(phone_number, None)
@@ -38,7 +33,7 @@ def main():
                     region = geocoder.description_for_number(parsed_number, "fr")
                     status = "Valid"
                     
-                    print(f"""{Colors.green}
+                    print(f"""{Colors.red}
 Phone : {phone_number}
 Country Code : {country_code}
 Country : {country}
@@ -54,7 +49,7 @@ Type Number : {type_number}
             except Exception as e:
                 print_error(f"Exception occurred: {e}")
 
-            choice = input(f"{Colors.yellow}Do you want to continue? (y/n): {Colors.reset}").strip().lower()
+            choice = input(f"{Colors.red}Do you want to continue? (y/n): {Colors.reset}").strip().lower()
             if choice != 'y':
                 break
 

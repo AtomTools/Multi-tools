@@ -1,18 +1,15 @@
 import requests
 import os
-from pystyle import Colors, Colorate
+from pystyle import Colors
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
-
-def print_title(title):
-    print(f"{Colors.blue}{'=' * 60}\n{title}\n{'=' * 60}{Colors.reset}")
 
 def print_error(message):
     print(f"{Colors.red}Error: {message}{Colors.reset}")
 
 def print_info(message):
-    print(f"{Colors.green}{message}{Colors.reset}")
+    print(f"{Colors.red}{message}{Colors.reset}")
 
 def format_value(value, default="Unknown"):
     if value is None:
@@ -23,10 +20,9 @@ def format_value(value, default="Unknown"):
 
 def main():
     clear()
-    print_title("Roblox User Information")
 
     while True:
-        user_id = input(f"{Colors.yellow}\nEnter the user ID (or 'exit' to quit): {Colors.reset}").strip()
+        user_id = input(f"{Colors.red}\nEnter the user ID : {Colors.reset}").strip()
 
         if user_id.lower() == 'exit':
             break
@@ -56,7 +52,7 @@ def main():
                 favorites_info = favorites_response.json().get('data', [])
                 favorite_games = ", ".join([game['name'] for game in favorites_info]) or "No favorite games"
 
-                info_text = f"""{Colors.cyan}
+                info_text = f"""{Colors.red}
 Username: {username}
 Id: {userid}
 Display Name: {display_name}

@@ -1,5 +1,6 @@
 import requests
 import os
+from pystyle import Colors
 
 def clear():
     os.system('cls')
@@ -19,26 +20,26 @@ def info_webhook(webhook_url):
         clear()
         print("\nInformation Webhook:")
 
-        print(f"ID      : {webhook_info['id']}")
-        print(f"Token   : {webhook_info['token']}")
-        print(f"Name    : {webhook_info['name']}")
-        print(f"Avatar  : {webhook_info['avatar']}")
-        print(f"Type    : {'bot' if webhook_info['type'] == 1 else 'webhook utilisateur'}")
+        print(f"ID : {webhook_info['id']}")
+        print(f"Token : {webhook_info['token']}")
+        print(f"Name : {webhook_info['name']}")
+        print(f"Avatar : {webhook_info['avatar']}")
+        print(f"Type  : {'bot' if webhook_info['type'] == 1 else 'webhook utilisateur'}")
         print(f"Channel ID : {webhook_info['channel_id']}")
         print(f"Server ID  : {webhook_info['guild_id']}")
 
         print("\nUser information associated with the Webhook:")
         if 'user' in webhook_info and webhook_info['user']:
             user_info = webhook_info['user']
-            print(f"ID          : {user_info['id']}")
-            print(f"Name        : {user_info['username']}")
+            print(f"ID : {user_info['id']}")
+            print(f"Name : {user_info['username']}")
             print(f"DisplayName : {user_info['global_name']}")
-            print(f"Number      : {user_info['discriminator']}")
-            print(f"Avatar      : {user_info['avatar']}")
-            print(f"Flags       : {user_info['flags']} Publique: {user_info['public_flags']}")
-            print(f"Color       : {user_info['accent_color']}")
-            print(f"Decoration  : {user_info['avatar_decoration_data']}")
-            print(f"Banner      : {user_info['banner_color']}")
+            print(f"Number : {user_info['discriminator']}")
+            print(f"Avatar : {user_info['avatar']}")
+            print(f"Flags : {user_info['flags']} Publique: {user_info['public_flags']}")
+            print(f"Color : {user_info['accent_color']}")
+            print(f"Decoration : {user_info['avatar_decoration_data']}")
+            print(f"Banner : {user_info['banner_color']}")
             print("")
         else:
             print("\nNo user information associated with the Webhook.")
@@ -50,7 +51,7 @@ def Error(e):
     print(f"[ERROR] {e}")
 
     try:
-        webhook_url = input("\nWebhook URL -> ")
+        webhook_url = input(f"\n{Colors.red}Webhook URL -> ")
         info_webhook(webhook_url)
 
     except Exception as e:

@@ -5,6 +5,7 @@ import subprocess
 from utils.theme import set_theme, get_current_theme, themes
 from pystyle import Colors, Colorate, Write
 
+
 REQUIRED_PACKAGES = [
     'whois', 'instaloader', 'discord.py==1.7.3', 'emailrep', 'requests', 
     'phonenumbers', 'pystyle', 'cloudscraper', 'fake_useragent', 'uuid', 
@@ -15,6 +16,7 @@ REQUIRED_PACKAGES = [
 def install_packages(packages):
     for package in packages:
         subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -66,7 +68,6 @@ def execute_script(script_name):
 
 def main():
     install_packages(REQUIRED_PACKAGES)
-    
     os.system('cls' if os.name == 'nt' else 'clear')
 
     current_theme = get_current_theme()
@@ -93,11 +94,12 @@ def main():
     os.system('cls' if os.name == 'nt' else 'clear')
 
     display_ascii_art()
-    
+
+    username = os.getlogin()
     while True:
         current_theme = get_current_theme()
         prompt = f"""
-{current_theme["primary"]}╭─── {current_theme["secondary"]}atom@user/Multi tools{current_theme["reset"]}
+{current_theme["primary"]}╭─── {current_theme["secondary"]}{username}@Atom
 {current_theme["primary"]}│
 {current_theme["primary"]}│
 {current_theme["primary"]}╰─$ {current_theme["reset"]} """
@@ -161,22 +163,21 @@ def main():
         elif choice == '28':
             execute_script('token_info.py')
         elif choice == '29':
-                    print("\nAvailable themes:")
-                    for i, theme_name in enumerate(themes.keys(), 1):
-                        print(f"{themes[theme_name]['primary']}{i}. {theme_name}{themes[theme_name]['reset']}")
-                    theme_choice = input("Choose a theme by number: ").strip()
-                    theme_names = list(themes.keys())
-                    try:
-                        theme_index = int(theme_choice) - 1
-                        if 0 <= theme_index < len(theme_names):
-                            set_theme(theme_names[theme_index])
-                            os.system('cls' if os.name == 'nt' else 'clear')
-                        
-                            display_ascii_art() 
-                        else:
-                            print(f"{get_current_theme()['primary']}Invalid choice. No theme changed.{get_current_theme()['reset']}")
-                    except ValueError:
-                        print(f"{get_current_theme()['primary']}Invalid input. Please enter a number.{get_current_theme()['reset']}")
+            print("\nAvailable themes:")
+            for i, theme_name in enumerate(themes.keys(), 1):
+                print(f"{themes[theme_name]['primary']}{i}. {theme_name}{themes[theme_name]['reset']}")
+            theme_choice = input("Choose a theme by number: ").strip()
+            theme_names = list(themes.keys())
+            try:
+                theme_index = int(theme_choice) - 1
+                if 0 <= theme_index < len(theme_names):
+                    set_theme(theme_names[theme_index])
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    display_ascii_art()
+                else:
+                    print(f"{get_current_theme()['primary']}Invalid choice. No theme changed.{get_current_theme()['reset']}")
+            except ValueError:
+                print(f"{get_current_theme()['primary']}Invalid input. Please enter a number.{get_current_theme()['reset']}")
         elif choice == '30':
             execute_script('tools_info.py')
         elif choice == '31':
@@ -185,14 +186,23 @@ def main():
             execute_script('dos_voice.py')
         elif choice == '33':
             execute_script('scrapper_proxy.py')
+        elif choice == '34':
+            execute_script('ip_generator.py')
+        elif choice == '35':
+            execute_script('site_phising.py')
+        elif choice == '36':
+            execute_script('roblox_cookie_info.py')
+        elif choice == '37':
+            execute_script('search_database.py')
+        elif choice == '38':
+            execute_script('token_decrypt.py')
         elif choice == 'next':
             execute_script('main2.py')
         elif choice == 'prev':
-                    clear()
-                    display_ascii_art()
+            clear()
+            display_ascii_art()
         elif choice == 'exit':
             break
-
 
 if __name__ == "__main__":
     main()

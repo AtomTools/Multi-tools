@@ -1,6 +1,6 @@
 import instaloader
 import os
-from pystyle import Colors, Colorate
+from pystyle import Colors
 
 loader = instaloader.Instaloader()
 
@@ -14,20 +14,19 @@ def get_profile_info(username):
     try:
         profile = instaloader.Profile.from_username(loader.context, username)
 
-        print(f"{Colors.green}Username: {profile.username}{Colors.reset}")
-        print(f"{Colors.green}Name: {profile.full_name}{Colors.reset}")
-        print(f"{Colors.green}Bio: {profile.biography}{Colors.reset}")
-        print(f"{Colors.green}Followers: {profile.followers}{Colors.reset}")
-        print(f"{Colors.green}Following: {profile.followees}{Colors.reset}")
-        print(f"{Colors.green}Posts: {profile.mediacount}{Colors.reset}")
-        print(f"{Colors.green}Profile Picture URL: {profile.profile_pic_url}{Colors.reset}")
+        print(f"{Colors.red}Username: {profile.username}{Colors.reset}")
+        print(f"{Colors.red}Name: {profile.full_name}{Colors.reset}")
+        print(f"{Colors.red}Bio: {profile.biography}{Colors.reset}")
+        print(f"{Colors.red}Followers: {profile.followers}{Colors.reset}")
+        print(f"{Colors.red}Following: {profile.followees}{Colors.reset}")
+        print(f"{Colors.red}Posts: {profile.mediacount}{Colors.reset}")
+        print(f"{Colors.red}Profile Picture URL: {profile.profile_pic_url}{Colors.reset}")
 
-        print("\n{Colors.blue}Posts:{Colors.reset}")
         for post in profile.get_posts():
-            print(f"{Colors.blue}Post URL:{Colors.reset} {post.url}")
-            print(f"{Colors.blue}Caption:{Colors.reset} {post.caption[:100]}")  
-            print(f"{Colors.blue}Likes:{Colors.reset} {post.likes}")
-            print(f"{Colors.blue}Comments:{Colors.reset} {post.comments}")
+            print(f"{Colors.red}Post URL:{Colors.reset} {post.url}")
+            print(f"{Colors.red}Caption:{Colors.reset} {post.caption[:100]}")  
+            print(f"{Colors.red}Likes:{Colors.reset} {post.likes}")
+            print(f"{Colors.red}Comments:{Colors.reset} {post.comments}")
             print()
 
     except instaloader.exceptions.InstaloaderException as e:

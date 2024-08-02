@@ -4,33 +4,35 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from deep_translator import GoogleTranslator
+from pystyle import Colors
+
 
 def main():
     pass
 
 def Continue():
-    input("\nPress Enter to continue...")
+    input(f"\n{Colors.red}Press Enter to continue...")
 
 def clear():
     print("\033c", end="")
 
 def OnlyWindows():
-    print("This option is only available on Windows.")
+    print(f"{Colors.red}This option is only available on Windows.")
     Continue()
     clear()
 
 def OnlyLinux():
-    print("This option is only available on Linux.")
+    print(f"{Colors.red}This option is only available on Linux.")
     Continue()
     clear()
 
 def ErrorChoice():
-    print("Invalid choice. Please select a valid option.")
+    print(f"{Colors.red}Invalid choice. Please select a valid option.")
     Continue()
     clear()
 
 def ErrorModule(e):
-    print(f"Error importing module: {e}")
+    print(f"{Colors.red}Error importing module: {e}")
     Continue()
     clear()
 
@@ -228,13 +230,13 @@ try:
     clear()
     username = input((f"\n Username : "))
 
-    print("""
+    print(f"""{Colors.red}
 [01] -> Chrome (Linux)
 [02] -> Chrome (Windows)
 [03] -> Firefox (Windows)
 [04] -> Edge (Windows)
     """)
-    browser = input(f"Browser : ")
+    browser = input(f"{Colors.red}Browser : ")
 
     if browser in ['1', '01']:
         if sys.platform.startswith("win"):

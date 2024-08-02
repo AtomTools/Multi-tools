@@ -41,7 +41,6 @@ def save_ids_to_json(dm_channel_ids, filename):
         print_error(f"Error saving IDs to JSON: {e}")
 
 def MassDM(token_discord, dm_channel_ids, message):
-    """Sends a message to the specified DM channel IDs."""
     try:
         for channel_id in dm_channel_ids:
             response = requests.post(f"https://discord.com/api/v9/channels/{channel_id}/messages",
@@ -58,7 +57,6 @@ def MassDM(token_discord, dm_channel_ids, message):
 def execute_mass_dm():
     try:
         clear()
-        print_title("Mass DM Execution")
         token_discord = input(f"{Colors.red}Enter your Discord token: {Colors.reset}").strip()
         message = input(f"{Colors.red}Enter the message to send: {Colors.reset}").strip()
         output_file = "dm_channel_ids.json"

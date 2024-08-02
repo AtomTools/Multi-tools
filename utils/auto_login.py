@@ -16,12 +16,9 @@ def main():
     pass
 
 def autologin():
-    setTitle("Auto Login")
     clear()
-    autologintitle()
     
-    print(f"{Colors.red}Enter the token of the account you want to connect to")
-    entertoken = input(f"{Colors.red}Token: ")
+    entertoken = input(f"{Colors.red}Enter the token :")
     
     validityTest = requests.get('https://discordapp.com/api/v6/users/@me', headers={'Authorization': entertoken, 'Content-Type': 'application/json'})
     if validityTest.status_code != 200:

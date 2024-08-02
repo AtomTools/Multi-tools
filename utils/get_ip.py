@@ -2,20 +2,16 @@ import os
 import socket
 import requests
 from json import JSONDecodeError
-from pystyle import Colors, Colorate
+from pystyle import Colors
 
 def handle_error(e):
     print(f"{Colors.red}Error: {e}{Colors.reset}")
-
-def set_title(title):
-    print(f"{Colors.red}{title}{Colors.reset}")
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def main():
     clear_screen()
-    set_title("Get Your IP")
 
     try:
         print(f"{Colors.red}\nYour IP is not sent to anyone.{Colors.reset}")
@@ -48,11 +44,11 @@ def main():
             handle_error(e)
 
         clear_screen()
-        print(Colorate.Horizontal(Colors.red, f"""
+        print(f"""{Colors.red}
 IP Public (IPv4) : {ip_address_public}
 IP Local  (IPv4) : {ip_address_local}
 IPv6 : {ip_address_ipv6}
-        """))
+        """)
 
     except Exception as e:
         handle_error(e)

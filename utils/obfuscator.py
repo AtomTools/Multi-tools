@@ -5,6 +5,7 @@ import time
 import base64
 import os
 import regex
+from pystyle import Colors
 
 class RandomDataTypeGenerator:
     def __init__(self):
@@ -140,7 +141,7 @@ all_methods = [variable_renamer, add_random_variables, one_liner, str_to_hex_byt
 def main():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    input_file = input("Enter the path of the file to obfuscate: ")
+    input_file = input(f"{Colors.red}Enter the path of the file to obfuscate : ")
     
     if not os.path.isfile(input_file):
         print("File not found.")
@@ -155,7 +156,7 @@ def main():
     with open(output_file, 'w', encoding='utf-8') as file:
         file.write(obfuscated_code)
 
-    print(f"Obfuscated code saved to {output_file}")
+    print(f"{Colors.red}Obfuscated code saved to {output_file}")
 
 if __name__ == "__main__":
     main()

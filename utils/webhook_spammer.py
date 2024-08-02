@@ -1,6 +1,7 @@
 import requests
 import time
 import threading
+from pystyle import Colors
 
 def clear():
     print("\033c", end="")
@@ -13,19 +14,16 @@ def main():
     pass
 
 def webhookspam():
-    setTitle("WebHook Spammer")
     clear()
-    webhook = input(f"WebHook Link: ")
+    webhook = input(f"{Colors.red}WebHook Link: ")
     try:
         requests.post(webhook, json={'content': ""})
     except:
         print(f"Your WebHook is invalid !")
         time.sleep(2)
         clear()
-    print(f"\nEnter the message to spam ")
-    message = input(f"Message: ")
-    print(f"\nAmount of messages to send ")
-    amount = int(input(f"Amount: "))
+    message = input(f"\n{Colors.red}Enter the message to spam ")
+    amount = int(input(f"\n{Colors.red}Amount of messages to send "))
     
     def spam():
         try:

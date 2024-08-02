@@ -3,11 +3,12 @@ import string
 import requests
 import threading
 
+
 def clear():
     print("\033c", end="")
 
 def main():
-    print("Atom Tools - Discord Nitro Checker")
+    pass
 
 def ErrorModule(e):
     print(f"ERROR: {e}")

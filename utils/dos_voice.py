@@ -13,7 +13,7 @@ def get_token():
         raise ValueError(f"{Colors.red}You must provide a token.{Colors.reset}")
     return token
 
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 client = discord.Client(intents=intents, self_bot=True)
 
 async def sleep(ms):
