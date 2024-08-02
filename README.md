@@ -47,7 +47,12 @@ Atom Multi Tools is a versatile and powerful toolkit designed to streamline deve
 ```Theme Changer```
 ```Ddos Ip```
 ```Proxy Scrapper```
-
+```Ip Generator```
+```Site Phising```
+```Roblox Cookies Information```
+```Search In Database```
+```Token Decrypt```
+```Discord Mass Report```
 
 ## Installation 
 
