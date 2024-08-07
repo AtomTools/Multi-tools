@@ -1,25 +1,31 @@
-import os
-import sys
-import time
-import subprocess
-from utils.theme import set_theme, get_current_theme, themes
-from pystyle import Colors, Colorate, Write
-
-
 REQUIRED_PACKAGES = [
-    'whois', 'instaloader', 'discord.py==1.7.3', 'emailrep', 'requests', 
-    'phonenumbers', 'pystyle', 'cloudscraper', 'fake_useragent', 'uuid', 
-    'fade', 'py-socket', 'aiohttp', 'selenium', 'holehe', 
+    'whois', 'instaloader', 'discord.py==1.7.3', 'emailrep', 'requests',
+    'phonenumbers', 'pystyle', 'cloudscraper', 'fake_useragent', 'uuid',
+    'fade', 'py-socket', 'aiohttp', 'selenium', 'holehe',
     'deep_translator', 'colorama', 'instaloader'
 ]
 
-def install_packages(packages):
+
+def install_packages(packages: list[str]):
     for package in packages:
         subprocess.check_call([sys.executable, "-m", "pip", "install", package])
 
 
+try:
+    import os
+    import sys
+    import time
+    import subprocess
+    import utils.theme
+    from pystyle import Colors, Colorate, Write
+except Exception as e:
+    print(e)
+    install_packages(REQUIRED_PACKAGES)
+
+
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
+
 
 def animated_text(text, delay=0.05):
     for line in text.split('\n'):
@@ -31,8 +37,9 @@ def animated_text(text, delay=0.05):
         sys.stdout.flush()
         time.sleep(delay)
 
+
 def display_ascii_art():
-    current_theme = get_current_theme()
+    current_theme = utils.theme.get_current_theme()
     art = f"""{current_theme["primary"]}
                                          ▄▄▄· ▄▄▄▄▄      • ▌ ▄ ·.     • ▌ ▄ ·. ▄• ▄▌▄▄▌  ▄▄▄▄▄▪      ▄▄▄▄▄            ▄▄▌  .▄▄ · 
                                         ▐█ ▀█ •██  ▪     ·██ ▐███▪    ·██ ▐███▪█▪██▌██•  •██  ██     •██  ▪     ▪     ██•  ▐█ ▀. 
@@ -59,18 +66,20 @@ def display_ascii_art():
 {current_theme["reset"]}"""
     animated_text(art, delay=0)
 
+
 def execute_script(script_name):
     script_path = os.path.join('utils', f'{script_name}')
     try:
         subprocess.run(['python', script_path], check=True)
     except subprocess.CalledProcessError as e:
-        print(f"{get_current_theme()['primary']}Error executing script '{script_name}': {e}{get_current_theme()['reset']}")
+        print(
+            f"{utils.theme.get_current_theme()['primary']}Error executing script '{script_name}': {e}{utils.theme.get_current_theme()['reset']}")
+
 
 def main():
-    install_packages(REQUIRED_PACKAGES)
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    current_theme = get_current_theme()
+    current_theme = utils.theme.get_current_theme()
 
     warning_message = f"""
 {current_theme["primary"]}
@@ -97,15 +106,14 @@ def main():
 
     username = os.getlogin()
     while True:
-        current_theme = get_current_theme()
+        current_theme = utils.theme.get_current_theme()
         prompt = f"""
 {current_theme["primary"]}╭─── {current_theme["secondary"]}{username}@Atom
 {current_theme["primary"]}│
-{current_theme["primary"]}│
 {current_theme["primary"]}╰─$ {current_theme["reset"]} """
-        
+
         choice = input(prompt).strip()
-        
+
         if choice == '1':
             execute_script('account_nuker.py')
         elif choice == '2':
@@ -163,6 +171,7 @@ def main():
         elif choice == '28':
             execute_script('token_info.py')
         elif choice == '29':
+            themes = utils.theme.themes
             print("\nAvailable themes:")
             for i, theme_name in enumerate(themes.keys(), 1):
                 print(f"{themes[theme_name]['primary']}{i}. {theme_name}{themes[theme_name]['reset']}")
@@ -171,13 +180,15 @@ def main():
             try:
                 theme_index = int(theme_choice) - 1
                 if 0 <= theme_index < len(theme_names):
-                    set_theme(theme_names[theme_index])
+                    utils.theme.set_theme(theme_names[theme_index])
                     os.system('cls' if os.name == 'nt' else 'clear')
                     display_ascii_art()
                 else:
-                    print(f"{get_current_theme()['primary']}Invalid choice. No theme changed.{get_current_theme()['reset']}")
+                    print(
+                        f"{utils.theme.get_current_theme()['primary']}Invalid choice. No theme changed.{utils.theme.get_current_theme()['reset']}")
             except ValueError:
-                print(f"{get_current_theme()['primary']}Invalid input. Please enter a number.{get_current_theme()['reset']}")
+                print(
+                    f"{utils.theme.get_current_theme()['primary']}Invalid input. Please enter a number.{utils.theme.get_current_theme()['reset']}")
         elif choice == '30':
             execute_script('tools_info.py')
         elif choice == '31':
@@ -203,6 +214,7 @@ def main():
             display_ascii_art()
         elif choice == 'exit':
             break
+
 
 if __name__ == "__main__":
     main()
