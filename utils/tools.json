@@ -1,5 +1,10 @@
 {
     "name": "Atom",
+    "version": "2.2",
+    "developers": [
+     "red.(redwxll)",
+     "blue.(escopeta4020)"
+    ],
     "code": "Python",
     "language": "EN",
     "creator": "Atom tools",

@@ -1,31 +1,139 @@
-REQUIRED_PACKAGES = [
-    'whois', 'instaloader', 'discord.py==1.7.3', 'emailrep', 'requests',
-    'phonenumbers', 'pystyle', 'cloudscraper', 'fake_useragent', 'uuid',
-    'fade', 'py-socket', 'aiohttp', 'selenium', 'holehe',
-    'deep_translator', 'colorama', 'instaloader'
-]
+import os
+import sys
+import time
+import threading
+import subprocess
+import json
+from utils.theme import set_theme, get_current_theme, theme_banner, themes
 
+if os.name == 'nt':
+    import msvcrt
+else:
+    import tty
+    import termios
 
-def install_packages(packages: list[str]):
-    for package in packages:
-        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+def read_requirements(file_path):
+    with open(file_path, 'r') as file:
+        return [line.strip() for line in file if line.strip() and not line.startswith('#')]
+
+def read_tools_info(json_path):
+    with open(json_path, 'r') as file:
+        data = json.load(file)
+    return data
 
 
 try:
-    import os
-    import sys
-    import time
-    import subprocess
-    import utils.theme
-    from pystyle import Colors, Colorate, Write
+    import pkg_resources
+    import fade
+    from blessed import Terminal
+    from pystyle import Add, Anime, Center, Colorate, Colors, Cursor, Write
 except Exception as e:
     print(e)
-    install_packages(REQUIRED_PACKAGES)
 
+term = Terminal()
+
+def get_choice_windows(prompt):
+    print(prompt, end='', flush=True)
+
+    choice = ""
+    
+    while True:
+        char = msvcrt.getch()
+        
+        if char == b'\x1b':
+            next1, next2 = msvcrt.getch(), msvcrt.getch()
+            if next1 == b'[':
+                if next2 == b'C':
+                    return 'next'
+                elif next2 == b'D':
+                    return 'prev'
+        elif char in [b'\r', b'\n']:
+            print()
+            return choice.strip()
+        elif char == b'>':
+            return 'next'
+        elif char == b'<':
+            return 'prev'
+        elif char == b'?':
+            return '?'
+        elif char == b'=':
+            return '='
+        elif char == b'\x08':
+            if choice:
+                choice = choice[:-1]
+                sys.stdout.write('\b \b')
+                sys.stdout.flush()
+        elif char == b'\x03':  # Ctrl+C
+            raise KeyboardInterrupt
+        elif char == b'\x04':  # Ctrl+D
+            raise EOFError
+        elif char == b'\x1a':  # Ctrl+Z
+            raise KeyboardInterrupt
+        else:
+            choice += char.decode()
+            sys.stdout.write(char.decode())
+            sys.stdout.flush()
+
+def get_choice_unix(prompt):
+    print(prompt, end='', flush=True)
+
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    
+    try:
+        tty.setraw(sys.stdin.fileno())
+        choice = ""
+        
+        while True:
+            char = sys.stdin.read(1)
+            
+            if char == '\x1b':
+                next1, next2 = sys.stdin.read(1), sys.stdin.read(1)
+                if next1 == '[':
+                    if next2 == 'C':
+                        return 'next'
+                    elif next2 == 'D':
+                        return 'prev'
+            elif char in ['\r', '\n']:
+                print()
+                return choice.strip()
+            elif char == '>':
+                return 'next'
+            elif char == '<':
+                return 'prev'
+            elif char == '?':
+                return '?'
+            elif char == '=':
+                return '='
+            elif char == '\x7f':
+                if choice:
+                    choice = choice[:-1]
+                    sys.stdout.write('\b \b')
+                    sys.stdout.flush()
+            elif char == '\x03':  # Ctrl+C
+                raise KeyboardInterrupt
+            elif char == '\x04':  # Ctrl+D
+                raise EOFError
+            elif char == '\x1a':  # Ctrl+Z
+                raise KeyboardInterrupt
+            else:
+                choice += char
+                sys.stdout.write(char)
+                sys.stdout.flush()
+    except (KeyboardInterrupt, EOFError):
+        return 'exit'
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
 def clear():
-    os.system('cls' if os.name == 'nt' else 'clear')
-
+    system = os.name
+    if system == 'nt':
+        os.system('cls')
+    elif system == 'posix':
+        os.system('clear')
+    else:
+        print('\n'*120)
+    return
 
 def animated_text(text, delay=0.05):
     for line in text.split('\n'):
@@ -38,140 +146,235 @@ def animated_text(text, delay=0.05):
         time.sleep(delay)
 
 
-def display_ascii_art():
-    current_theme = utils.theme.get_current_theme()
-    art = f"""{current_theme["primary"]}
+def get_scripts():
+    scripts = []
+    for root, _, files in os.walk('utils'):
+        for file in files:
+            if file.endswith('.py') and root != 'utils':
+                category = os.path.basename(root)
+                script_name = os.path.splitext(file)[0].replace('_', ' ').title()
+                scripts.append((script_name, category))
+    return scripts
+
+def calculate_total_length(entry_number, entry_script, entry_category):
+    return len(entry_number) + len(entry_script) + len(entry_category)
+
+def add_spaces(entry, total_length, target_length):
+    return entry + ' ' * (target_length + total_length)
+
+def display_ascii_art(page_scripts, page_number, total_pages, tools_info, current_theme):
+    developers = " x ".join(tools_info['developers'])
+    version = tools_info['version']
+
+    entries_per_page = 30
+    total_entries = len(page_scripts)
+    lines_per_page = (total_entries + 2) // 3
+
+    text_color = f"{current_theme['primary']}AA{current_theme['reset']}{current_theme['secondary']}BBBBBBBBBB{current_theme['reset']}{current_theme['primary']}CCCCCCCCC{current_theme['reset']}"
+    add_color = len(text_color)
+    line_width = add_color
+
+    split = f"                            "
+    bar_old = f"                            ─────────────────────────────────────────────────────────────────────────────────────────────────────────" 
+    lbar = "─" * 105
+    bar = f"{split}{lbar}"
+
+    art = theme_banner(f"""
                                          ▄▄▄· ▄▄▄▄▄      • ▌ ▄ ·.     • ▌ ▄ ·. ▄• ▄▌▄▄▌  ▄▄▄▄▄▪      ▄▄▄▄▄            ▄▄▌  .▄▄ · 
                                         ▐█ ▀█ •██  ▪     ·██ ▐███▪    ·██ ▐███▪█▪██▌██•  •██  ██     •██  ▪     ▪     ██•  ▐█ ▀. 
                                         ▄█▀▀█  ▐█.▪ ▄█▀▄ ▐█ ▌▐▌▐█·    ▐█ ▌▐▌▐█·█▌▐█▌██▪   ▐█.▪▐█·     ▐█.▪ ▄█▀▄  ▄█▀▄ ██▪  ▄▀▀▀█▄
                                         ▐█ ▪▐▌ ▐█▌·▐█▌.▐▌██ ██▌▐█▌    ██ ██▌▐█▌▐█▄█▌▐█▌▐▌ ▐█▌·▐█▌     ▐█▌·▐█▌.▐▌▐█▌.▐▌▐█▌▐▌▐█▄▪▐█
                                          ▀  ▀  ▀▀▀  ▀█▄▀▪▀▀  █▪▀▀▀    ▀▀  █▪▀▀▀ ▀▀▀ .▀▀▀  ▀▀▀ ▀▀▀     ▀▀▀  ▀█▄▀▪ ▀█▄▀▪.▀▀▀  ▀▀▀▀ 
+""")
 
-                                                          Developers : red.(redwxll) x blue.(escopeta4020)
-                            ─────────────────────────────────────────────────────────────────────────────────────────────────────────
-                                                                         Version : 2.2
-                            ─────────────────────────────────────────────────────────────────────────────────────────────────────────
-                            {current_theme["primary"]}1{current_theme["reset"]} Account Nuker {current_theme["primary"]}(Discord){current_theme["reset"]}              {current_theme["primary"]}11{current_theme["reset"]} Ip Information {current_theme["primary"]}(Osint){current_theme["reset"]}           {current_theme["primary"]}21{current_theme["reset"]} Number Scrapper {current_theme["primary"]}(Scrapper){current_theme["reset"]}   
-                            {current_theme["primary"]}2{current_theme["reset"]} Badge Changer {current_theme["primary"]}(Discord){current_theme["reset"]}              {current_theme["primary"]}12{current_theme["reset"]} Email Information {current_theme["primary"]}(Osint){current_theme["reset"]}        {current_theme["primary"]}22{current_theme["reset"]} Website Scrapper {current_theme["primary"]}(Scrapper){current_theme["reset"]}  
-                            {current_theme["primary"]}3{current_theme["reset"]} Clear Dm {current_theme["primary"]}(Discord){current_theme["reset"]}                   {current_theme["primary"]}13{current_theme["reset"]} Number Information {current_theme["primary"]}(Osint){current_theme["reset"]}       {current_theme["primary"]}23{current_theme["reset"]} IBAN Generator {current_theme["primary"]}(Generator){current_theme["reset"]}    
-                            {current_theme["primary"]}4{current_theme["reset"]} Group Spammer {current_theme["primary"]}(Discord){current_theme["reset"]}              {current_theme["primary"]}14{current_theme["reset"]} Roblox Id Information {current_theme["primary"]}(Osint){current_theme["reset"]}    {current_theme["primary"]}24{current_theme["reset"]} CC Generator {current_theme["primary"]}(Generator){current_theme["reset"]}    
-                            {current_theme["primary"]}5{current_theme["reset"]} Server Info {current_theme["primary"]}(Discord){current_theme["reset"]}                {current_theme["primary"]}15{current_theme["reset"]} Roblox User Information {current_theme["primary"]}(Osint){current_theme["reset"]}  {current_theme["primary"]}25{current_theme["reset"]} Obfuscator {current_theme["primary"]}(Other){current_theme["reset"]}         
-                            {current_theme["primary"]}6{current_theme["reset"]} Status Rotator {current_theme["primary"]}(Discord){current_theme["reset"]}             {current_theme["primary"]}16{current_theme["reset"]} Username Tracker {current_theme["primary"]}(Osint){current_theme["reset"]}         {current_theme["primary"]}26{current_theme["reset"]} Token Generator {current_theme["primary"]}(Discord){current_theme["reset"]}     
-                            {current_theme["primary"]}7{current_theme["reset"]} Token Checker {current_theme["primary"]}(Discord){current_theme["reset"]}              {current_theme["primary"]}17{current_theme["reset"]} Dox Tracker {current_theme["primary"]}(Osint){current_theme["reset"]}              {current_theme["primary"]}27{current_theme["reset"]} Fivem Scrapper {current_theme["primary"]}(Scrapper){current_theme["reset"]}          
-                            {current_theme["primary"]}8{current_theme["reset"]} Token Mass Dm {current_theme["primary"]}(Discord){current_theme["reset"]}              {current_theme["primary"]}18{current_theme["reset"]} Instagram Information {current_theme["primary"]}(Osint){current_theme["reset"]}    {current_theme["primary"]}28{current_theme["reset"]} Token Information {current_theme["primary"]}(Discord){current_theme["reset"]}                        
-                            {current_theme["primary"]}9{current_theme["reset"]} Webhook Info {current_theme["primary"]}(Discord){current_theme["reset"]}               {current_theme["primary"]}19{current_theme["reset"]} Nitro Generator {current_theme["primary"]}(Generator){current_theme["reset"]}      {current_theme["primary"]}29{current_theme["reset"]} Theme Changer {current_theme["primary"]}(Other){current_theme["reset"]}                        
-                            {current_theme["primary"]}10{current_theme["reset"]} Webhook Spammer {current_theme["primary"]}(Discord){current_theme["reset"]}           {current_theme["primary"]}20{current_theme["reset"]} Get Your IP {current_theme["primary"]}(Other){current_theme["reset"]}              {current_theme["primary"]}30{current_theme["reset"]} Tools Information {current_theme["primary"]}(Other){current_theme["reset"]}                                                     
-                                                                                                       {current_theme["primary"]}next{current_theme["reset"]} Next Page
-                            
-{current_theme["reset"]}"""
+    art += f"""{current_theme["primary"]}
+                                                          Developers : {current_theme['reset']}{current_theme["secondary"]}{developers}{current_theme['reset']}{current_theme["primary"]}
+{bar}
+                                                                         Version : {current_theme['reset']}{current_theme["secondary"]}{version}{current_theme['reset']}{current_theme["primary"]}
+{bar}
+"""
+
+    for i in range(lines_per_page):
+        line = ""
+        for j in range(3):
+            if(total_entries < 30):
+             index = i * 3 + j
+            else:
+             if j == 0:
+                index = i
+             elif j == 1:
+                index = i + 10
+             elif j == 2:
+                index = i + 20
+            if index < total_entries:
+                total_lenght = ""
+                spaces2 =  " " * 15
+                script, category = page_scripts[index]
+                script_number = (page_number - 1) * entries_per_page + index + 1
+                entry_number = f"{current_theme['primary']}{script_number}{current_theme['reset']}"
+                entry_script = f"{current_theme['secondary']}{script}{current_theme['reset']}"
+                entry_category = f"{current_theme['primary']}({category.title()}){current_theme['reset']}"
+
+                total_length = calculate_total_length(entry_number, entry_script, entry_category)
+                spaces_to_add = total_length - line_width
+                spaces = ""
+                if spaces_to_add < 0:
+                 spaces = " " * abs(spaces_to_add)
+                elif spaces_to_add > 0:
+                 spaces2 = spaces2[:-spaces_to_add]
+
+                if j == 0:
+                 line += f"                            {entry_number} {entry_script} {entry_category}{spaces}{spaces2}"
+                elif j == 1:
+                 line += f"{entry_number} {entry_script} {entry_category}{spaces}{spaces2}"
+                else:
+                 line += f"{entry_number} {entry_script} {entry_category}"
+
+            else:
+                line += " " * line_width
+
+        art += line + "\n"
+
+    if art.endswith("\n"):
+        art = art[:-1]
+
+    art += f"""
+{current_theme["primary"]}{bar}
+                                                                          Page : {current_theme['reset']}{current_theme["secondary"]}{page_number}{current_theme['reset']}{current_theme["primary"]}-{current_theme['reset']}{current_theme["secondary"]}{total_pages}{current_theme['reset']}{current_theme["primary"]}
+{bar}{current_theme["reset"]}\n"""
+
+    art += f"                            "
+    if page_number > 1:
+         art += f"\t\t    {current_theme['primary']}<{current_theme['reset']} {current_theme['secondary']}Prev{current_theme['reset']}   "
+    art += f"\t\t\t{current_theme['primary']}={current_theme['reset']} {current_theme['secondary']}Theme{current_theme['reset']}\t\t\t  {current_theme['primary']}?{current_theme['reset']} {current_theme['secondary']}Info{current_theme['reset']}\t\t"
+    if page_number < total_pages:
+        art += f"    {current_theme['primary']}>{current_theme['reset']} {current_theme['secondary']}Next{current_theme['reset']}"
+    
     animated_text(art, delay=0)
 
-
 def execute_script(script_name):
-    script_path = os.path.join('utils', f'{script_name}')
     try:
-        subprocess.run(['python', script_path], check=True)
+        if "utils" in script_name:
+            script_path = script_name
+        else:
+            script_path = os.path.join('utils', script_name)
+        subprocess.run([sys.executable, script_path], check=True)
     except subprocess.CalledProcessError as e:
-        print(
-            f"{utils.theme.get_current_theme()['primary']}Error executing script '{script_name}': {e}{utils.theme.get_current_theme()['reset']}")
+        print(f"An error occurred while running the script {script_path}: {e}")
+
+def display_icon(icon_text):
+    icon_lines = icon_text.splitlines()
+    total_lines = len(icon_lines)
+    display_time = 1.5
+    interval = display_time / total_lines
+
+    for line in icon_lines:
+        animated_text(Colors.green + line + Colors.reset + "\n", delay=0.01)
+        time.sleep(interval)
+
+def blink_warning_centered():
+    Cursor.HideCursor()
+    ascii_art = """
+██     ██  █████  ██████  ███    ██ ██ ███    ██  ██████  
+██     ██ ██   ██ ██   ██ ████   ██ ██ ████   ██ ██       
+██  █  ██ ███████ ██████  ██ ██  ██ ██ ██ ██  ██ ██   ███ 
+██ ███ ██ ██   ██ ██   ██ ██  ██ ██ ██ ██  ██ ██ ██    ██ 
+ ███ ███  ██   ██ ██   ██ ██   ████ ██ ██   ████  ██████ 
+"""
+
+    orange_text = Colors.orange + ascii_art + Colors.reset
+
+    text_width = max(len(line) for line in ascii_art.splitlines())
+    text_height = len(ascii_art.splitlines())
+
+    with term.cbreak(), term.hidden_cursor():
+        x = (term.width // 2) - (text_width // 2)
+        y = (term.height // 2) - (text_height // 2)
+        
+        for _ in range(4):
+            for i, line in enumerate(orange_text.splitlines()):
+                print(term.move_xy(x, y + i) + line, end='', flush=True)
+            time.sleep(0.25)
+            for i in range(text_height):
+                print(term.move_xy(x, y + i) + ' ' * text_width, end='', flush=True)
+            time.sleep(0.25)
+        
+        print(term.clear(), end='', flush=True)
+        print(term.move_xy(0, 0), end='', flush=True)
 
 
-def main():
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-    current_theme = utils.theme.get_current_theme()
-
-    warning_message = f"""
-{current_theme["primary"]}
+def warning_animation():
+    icon_text = f"""
       ____               
-     /___/\_     WARNING: The use of these tools can have significant
-    _\   \/_/\__  risks and consequences. By using this software, you
-  __\       \/_/\  agree that we are not responsible for any damage or
-  \   __    __ \ \  issues that may arise from the use of these tools.
- __\  \_\   \_\ \ \   __ Please use responsibly and at your own risk.
+     /___/\_     
+    _\   \/_/\__  
+  __\       \/_/\  
+  \   __    __ \ \  
+ __\  \_\   \_\ \ \  __  
 /_/\\   __   __  \ \_/_/\          
 \_\/_\__\/\__\/\__\/_\_\/             
    \_\/_/\       /_\_\/
       \_\/       \_\/
-{current_theme["reset"]}
-    """
 
-    animated_text(warning_message, delay=0.01)
+"""
+    
 
-    input("\nPress Enter to continue...")
+    warning_message = """The use of these tools can have significant
+risks and consequences. By using this software, you
+agree that we are not responsible for any damage or
+issues that may arise from the use of these tools.
+Please use responsibly and at your own risk.
 
-    os.system('cls' if os.name == 'nt' else 'clear')
+"""
 
-    display_ascii_art()
+    blink_warning_centered()
 
+    combined_message = Add.Add(icon_text, warning_message, 3)
+    
+    Write.Print(Center.Center(combined_message),get_current_theme()['primary'], interval=0.0025)
+    Write.Input("Press Enter to continue...", get_current_theme()['fade'], interval=0.1)
+    
+def main():
+    clear()
+
+    current_theme = get_current_theme()
+
+    warning_animation()
+    
     username = os.getlogin()
+    scripts = get_scripts()
+    tools_info = read_tools_info('utils/tools.json')
+    page_size = 30
+    total_pages = (len(scripts) + page_size - 1) // page_size
+    current_page = 1
+
     while True:
-        current_theme = utils.theme.get_current_theme()
+        clear()
+        current_theme = get_current_theme()
+        page_scripts = scripts[(current_page-1)*page_size:current_page*page_size]
+        display_ascii_art(page_scripts, current_page, total_pages, tools_info, current_theme)
+
         prompt = f"""
 {current_theme["primary"]}╭─── {current_theme["secondary"]}{username}@Atom
 {current_theme["primary"]}│
 {current_theme["primary"]}╰─$ {current_theme["reset"]} """
-
-        choice = input(prompt).strip()
-
-        if choice == '1':
-            execute_script('account_nuker.py')
-        elif choice == '2':
-            execute_script('badge_changer.py')
-        elif choice == '3':
-            execute_script('clear_dm.py')
-        elif choice == '4':
-            execute_script('group_spammer.py')
-        elif choice == '5':
-            execute_script('server_info.py')
-        elif choice == '6':
-            execute_script('status_rotator.py')
-        elif choice == '7':
-            execute_script('token_checker.py')
-        elif choice == '8':
-            execute_script('token_massdm.py')
-        elif choice == '9':
-            execute_script('webhook_info.py')
-        elif choice == '10':
-            execute_script('webhook_spammer.py')
-        elif choice == '11':
-            execute_script('ip_info.py')
-        elif choice == '12':
-            execute_script('email_info.py')
-        elif choice == '13':
-            execute_script('number_info.py')
-        elif choice == '14':
-            execute_script('roblox_id_info.py')
-        elif choice == '15':
-            execute_script('roblox_user_info.py')
-        elif choice == '16':
-            execute_script('username_tracker.py')
-        elif choice == '17':
-            execute_script('dox_tracker.py')
-        elif choice == '18':
-            execute_script('instagram_user_info.py')
-        elif choice == '19':
-            execute_script('nitro_generator.py')
-        elif choice == '20':
-            execute_script('get_ip.py')
-        elif choice == '21':
-            execute_script('scrapper_number.py')
-        elif choice == '22':
-            execute_script('website_scraper.py')
-        elif choice == '23':
-            execute_script('iban_generator.py')
-        elif choice == '24':
-            execute_script('credit_card_scrapper.py')
-        elif choice == '25':
-            execute_script('obfuscator.py')
-        elif choice == '26':
-            execute_script('token_generator.py')
-        elif choice == '27':
-            execute_script('fivem_scrapper.py')
-        elif choice == '28':
-            execute_script('token_info.py')
-        elif choice == '29':
-            themes = utils.theme.themes
+        Cursor.ShowCursor()
+        if os.name == 'nt':
+         choice = get_choice_windows(prompt)
+        else:
+         choice = get_choice_unix(prompt)
+        
+        if choice.isdigit():
+            script_index = int(choice) - 1
+            if 0 <= script_index < len(page_scripts):
+                script_name, category = page_scripts[script_index]
+                script_path = os.path.join('utils', category, script_name.replace(' ', '_').lower() + '.py')
+                execute_script(script_path)
+        elif choice == '?':
+            execute_script("tools_info.py")
+        elif choice == '=':
+            execute_script("theme_page.py")
+        elif choice == ':':
             print("\nAvailable themes:")
             for i, theme_name in enumerate(themes.keys(), 1):
                 print(f"{themes[theme_name]['primary']}{i}. {theme_name}{themes[theme_name]['reset']}")
@@ -180,41 +383,31 @@ def main():
             try:
                 theme_index = int(theme_choice) - 1
                 if 0 <= theme_index < len(theme_names):
-                    utils.theme.set_theme(theme_names[theme_index])
-                    os.system('cls' if os.name == 'nt' else 'clear')
-                    display_ascii_art()
+                    set_theme(theme_names[theme_index])
+                    clear()
                 else:
-                    print(
-                        f"{utils.theme.get_current_theme()['primary']}Invalid choice. No theme changed.{utils.theme.get_current_theme()['reset']}")
+                    print(f"{get_current_theme()['primary']}Invalid choice. No theme changed.{get_current_theme()['reset']}")
             except ValueError:
-                print(
-                    f"{utils.theme.get_current_theme()['primary']}Invalid input. Please enter a number.{utils.theme.get_current_theme()['reset']}")
-        elif choice == '30':
-            execute_script('tools_info.py')
-        elif choice == '31':
-            execute_script('ddos_ip.py')
-        elif choice == '32':
-            execute_script('dos_voice.py')
-        elif choice == '33':
-            execute_script('scrapper_proxy.py')
-        elif choice == '34':
-            execute_script('ip_generator.py')
-        elif choice == '35':
-            execute_script('site_phising.py')
-        elif choice == '36':
-            execute_script('roblox_cookie_info.py')
-        elif choice == '37':
-            execute_script('search_database.py')
-        elif choice == '38':
-            execute_script('token_decrypt.py')
-        elif choice == 'next':
-            execute_script('main2.py')
-        elif choice == 'prev':
+                print(f"{get_current_theme()['primary']}Invalid input. Please enter a number.{get_current_theme()['reset']}")
+        elif choice == 'next' and current_page < total_pages:
+            Cursor.HideCursor()
             clear()
-            display_ascii_art()
+            display_ascii_art(page_scripts, current_page, total_pages, tools_info, current_theme)
+            Cursor.ShowCursor()
+            current_page += 1
+        elif choice == 'prev' and current_page > 1:
+            Cursor.HideCursor()
+            clear()
+            display_ascii_art(page_scripts, current_page, total_pages, tools_info, current_theme)
+            Cursor.ShowCursor()
+            current_page -= 1
         elif choice == 'exit':
+            print('\n')
             break
-
+        else:
+            print(f"\n{get_current_theme()['primary']}Invalid choice. Please try again.{get_current_theme()['reset']}")
+            time.sleep(0.5)
 
 if __name__ == "__main__":
     main()
+    
